@@ -5,8 +5,4 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="DiscordBotAbstraction" Version="1.1.1" />
-  </ItemGroup>
-
 </Project>
