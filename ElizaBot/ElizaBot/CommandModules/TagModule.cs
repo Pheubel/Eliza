@@ -160,5 +160,36 @@ namespace ElizaBot.CommandModules
             await _context.SaveChangesAsync();
             await ReplyAsync("succesfully blacklisted the tags.");
         }
+
+
+        [Command("unblacklist")]
+        public async Task Unblacklist(params string[] tags)
+        {
+            if (tags.Length == 0)
+                return;
+
+            var sanitizedTags = tags.ToLower();
+
+            var user = await _context.Users.FindAsync(Context.User.Id);
+            if (user == null)
+            {
+                user = new Models.User()
+                {
+                    UserId = Context.User.Id
+                };
+
+                _context.Users.Add(user);
+            }
+
+            var databaseTags = await _context.Tags.Where(tag => sanitizedTags.Contains(tag.TagName)).ToArrayAsync();
+            for (int i = 0; i < databaseTags.Length; i++)
+            {
+                user.BlacklistedTags.Remove(databaseTags[i]);
+                databaseTags[i].Blacklisters.Remove(user);
+            }
+
+            await _context.SaveChangesAsync();
+            await ReplyAsync("succesfully removed the tags from your blacklist.");
+        }
     }
 }
