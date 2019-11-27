@@ -9,4 +9,8 @@
     <PackageReference Include="DiscordBotAbstraction" Version="1.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="CommandModules\" />
+  </ItemGroup>
+
 </Project>

@@ -1,6 +1,7 @@
 ﻿using DiscordAbstraction;
 using DiscordAbstraction.Extensions;
 using DiscordAbstraction.Interfaces;
+using ElizaBot.Handlers;
 using ElizaBot.Services;
 using System;
 using System.Threading.Tasks;
@@ -22,6 +23,7 @@ namespace ElizaBot
                 .UseEventHandler(options =>
                 {
                     options.UseCommandsWithPrefix(settings.Prefix);
+                    options.UseLogHandler(EventHandlers.LogHandler);
                 }).Build();
         }
     }
