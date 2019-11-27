@@ -85,6 +85,7 @@ namespace ElizaBot.CommandModules
             }
 
             await _context.SaveChangesAsync();
+            await ReplyAsync("succesfully subscribed to the tags.");
         }
 
         [Command("unsubscribe")]
