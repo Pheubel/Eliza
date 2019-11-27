@@ -1,8 +1,11 @@
 ﻿using DiscordAbstraction;
 using DiscordAbstraction.Extensions;
 using DiscordAbstraction.Interfaces;
+using ElizaBot.DatabaseContexts;
 using ElizaBot.Handlers;
 using ElizaBot.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 
@@ -15,16 +18,26 @@ namespace ElizaBot
         private static IClientService BuildService()
         {
             var settings = new AppSettingsLoader().LoadSettings<AppSettings>();
+            var serviceCollection = new ServiceCollection();
 
-            return ClientServiceBuilder.CreateDefaultBuilder()
+            ConfigureServices(serviceCollection, settings);
+
+            return ClientServiceBuilder.CreateDefaultBuilder(serviceCollection: serviceCollection)
                 .UseToken(settings.BotToken)
-                .AddSingletonService<RNGService>()
-                .AddSingletonService(settings)
                 .UseEventHandler(options =>
                 {
                     options.UseCommandsWithPrefix(settings.Prefix);
                     options.UseLogHandler(EventHandlers.LogHandler);
                 }).Build();
+        }
+
+        private static void ConfigureServices(IServiceCollection services, AppSettings settings)
+        {
+            services.AddSingleton<RNGService>();
+            services.AddDbContext<ApplicationContext>(options =>
+            {
+                options.UseSqlite(settings.ConnectionString);
+            });
         }
     }
 }
