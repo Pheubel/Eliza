@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace ElizaBot.CommandModules
 {
+    [RequireBotPermission(Discord.ChannelPermission.SendMessages)]
     public class TagModule : ModuleBase
     {
         private readonly ApplicationContext _context;
