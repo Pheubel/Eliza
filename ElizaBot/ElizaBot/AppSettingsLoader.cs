@@ -16,6 +16,9 @@ namespace ElizaBot
         public T LoadSettings<T>() where T : class, new()
         {
             const string APPLICATION_FILE = "appsettings.json";
+#if DEBUG
+            const string DEVELOPMENT_APPLICATION_FILE = "dev.appsettings.json";
+#endif
 
             if (!File.Exists(APPLICATION_FILE))
             {
@@ -23,6 +26,14 @@ namespace ElizaBot
                 {
                     writer.Write(JsonSerializer.Serialize(new T(), new JsonSerializerOptions() { WriteIndented = true }));
                 }
+
+#if DEBUG
+                if (!File.Exists(DEVELOPMENT_APPLICATION_FILE))
+                {
+                    using StreamWriter writer = new StreamWriter(DEVELOPMENT_APPLICATION_FILE);
+                    writer.Write($"{{{Environment.NewLine}{Environment.NewLine}}}");
+                }
+#endif
 
                 Console.WriteLine($"The application has been terminated, please fill \"{APPLICATION_FILE}\" with the appropriate settings.");
                 Environment.Exit(0);
@@ -81,6 +92,11 @@ namespace ElizaBot
                         }
                     }
                 }
+            }
+            else
+            {
+                using StreamWriter writer = new StreamWriter(DEVELOPMENT_APPLICATION_FILE);
+                writer.Write($"{{{Environment.NewLine}{Environment.NewLine}}}");
             }
         }
 #endif
