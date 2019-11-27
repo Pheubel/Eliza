@@ -91,7 +91,31 @@ namespace ElizaBot.CommandModules
         [Command("unsubscribe")]
         public async Task Unsubscribe(params string[] tags)
         {
+            if (tags.Length == 0)
+                return;
 
+            var sanitizedTags = tags.ToLower();
+
+            var user = await _context.Users.FindAsync(Context.User.Id);
+            if (user == null)
+            {
+                user = new Models.User()
+                {
+                    UserId = Context.User.Id
+                };
+
+                _context.Users.Add(user);
+            }
+
+            var databaseTags = await _context.Tags.Where(tag => sanitizedTags.Contains(tag.TagName)).ToArrayAsync();
+            for (int i = 0; i < databaseTags.Length; i++)
+            {
+                user.SubscribedTags.Remove(databaseTags[i]);
+                databaseTags[i].Subscribers.Remove(user);
+            }
+
+            await _context.SaveChangesAsync();
+            await ReplyAsync("succesfully unsubscribed from the tags.");
         }
     }
 }
