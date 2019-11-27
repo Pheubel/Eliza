@@ -48,7 +48,43 @@ namespace ElizaBot.CommandModules
         [Command("subscribe")]
         public async Task Subscribe(params string[] tags)
         {
+            if (tags.Length == 0)
+                return;
 
+            var sanitizedTags = tags.ToLower();
+
+            var user = await _context.Users.FindAsync(Context.User.Id);
+            if(user == null)
+            {
+                user = new Models.User() 
+                { 
+                    UserId = Context.User.Id,
+                    SubscribedTags = new List<Models.Tag>()
+                };
+
+                _context.Users.Add(user);
+            }
+
+            var databaseTags = await _context.Tags.Where(tag => sanitizedTags.Contains(tag.TagName)).ToArrayAsync();
+            for (int i = 0; i < databaseTags.Length; i++)
+            {
+                user.SubscribedTags.Add(databaseTags[i]);
+                databaseTags[i].Subscribers.Add(user);
+            }
+
+            foreach (var newTagName in sanitizedTags.Except(databaseTags.Select(t => t.TagName)))
+            {
+                var newTag = new Models.Tag()
+                {
+                    TagName = newTagName,
+                    Subscribers = new List<Models.User>()
+                };
+
+                user.SubscribedTags.Add(newTag);
+                newTag.Subscribers.Add(user);
+            }
+
+            await _context.SaveChangesAsync();
         }
 
         [Command("unsubscribe")]
