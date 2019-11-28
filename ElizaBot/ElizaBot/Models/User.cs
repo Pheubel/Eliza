@@ -11,9 +11,7 @@ namespace ElizaBot.Models
         [Key]
         public ulong UserId { get; set; }
 
-        [InverseProperty(nameof(Tag.Subscribers))]
-        public List<Tag> SubscribedTags { get; set; }
-        [InverseProperty(nameof(Tag.Blacklisters))]
-        public List<Tag> BlacklistedTags { get; set; }
+        public List<UserSubcribedTag> SubscribedTags { get; set; }
+        public List<UserBlacklistedTag> BlacklistedTags { get; set; }
     }
 }

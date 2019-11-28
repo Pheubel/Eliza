@@ -13,9 +13,7 @@ namespace ElizaBot.Models
         [Required]
         public string TagName { get; set; }
 
-        [InverseProperty(nameof(User.SubscribedTags))]
-        public List<User> Subscribers { get; set; }
-        [InverseProperty(nameof(User.BlacklistedTags))]
-        public List<User> Blacklisters { get; set; }
+        public List<UserSubcribedTag> Subscribers { get; set; }
+        public List<UserBlacklistedTag> Blacklisters { get; set; }
     }
 }
