@@ -30,7 +30,7 @@ namespace ElizaBot.CommandModules
 
             var usersToTag = await _context.Users
                 .AsNoTracking()
-                .Where(user => !user.BlacklistedTags.Any(t => sanitizedTags.Contains(t.Tag.TagName)) && user.SubscribedTags.All(t => sanitizedTags.Contains(t.Tag.TagName)))
+                .Where(user => user.UserId != Context.User.Id && !user.BlacklistedTags.Any(t => sanitizedTags.Contains(t.Tag.TagName)) && user.SubscribedTags.Any(t => sanitizedTags.Contains(t.Tag.TagName)))
                 .ToArrayAsync();
 
             if (usersToTag.Length == 0)
@@ -54,7 +54,7 @@ namespace ElizaBot.CommandModules
 
             var sanitizedTags = tags.ToLower();
 
-            var user = await _context.Users.FindAsync(Context.User.Id);
+            var user = await _context.Users.Include(u=> u.SubscribedTags).FirstOrDefaultAsync(u => u.UserId == Context.User.Id);
             if (user == null)
             {
                 user = new Models.User()
@@ -69,15 +69,16 @@ namespace ElizaBot.CommandModules
             var databaseTags = await _context.Tags.Where(tag => sanitizedTags.Contains(tag.TagName)).ToArrayAsync();
             for (int i = 0; i < databaseTags.Length; i++)
             {
+                if (user.SubscribedTags.Any(t => t.Tag.TagName == databaseTags[i].TagName))
+                    continue;
+
                 var subscription = new Models.UserSubcribedTag()
                 {
                     User = user,
                     Tag = databaseTags[i]
                 };
 
-                user.SubscribedTags.Add(subscription);
                 _context.UserSubscribedTags.Add(subscription);
-                databaseTags[i].Subscribers.Add(subscription);
             }
 
             foreach (var newTagName in sanitizedTags.Except(databaseTags.Select(t => t.TagName)))
@@ -94,9 +95,8 @@ namespace ElizaBot.CommandModules
                     Tag = newTag
                 };
 
-                user.SubscribedTags.Add(subscription);
+                
                 _context.UserSubscribedTags.Add(subscription);
-                newTag.Subscribers.Add(subscription);
             }
 
             await _context.SaveChangesAsync();
@@ -115,8 +115,6 @@ namespace ElizaBot.CommandModules
 
             foreach (var subscribedTag in subscribedTags)
             {
-                subscribedTag.User.SubscribedTags.Remove(subscribedTag);
-                subscribedTag.Tag.Subscribers.Remove(subscribedTag);
                 _context.UserSubscribedTags.Remove(subscribedTag);
             }
 
@@ -133,7 +131,7 @@ namespace ElizaBot.CommandModules
 
             var sanitizedTags = tags.ToLower();
 
-            var user = await _context.Users.FindAsync(Context.User.Id);
+            var user = await _context.Users.Include(u => u.BlacklistedTags).FirstOrDefaultAsync(u => u.UserId == Context.User.Id);
             if (user == null)
             {
                 user = new Models.User()
@@ -148,15 +146,16 @@ namespace ElizaBot.CommandModules
             var databaseTags = await _context.Tags.Where(tag => sanitizedTags.Contains(tag.TagName)).ToArrayAsync();
             for (int i = 0; i < databaseTags.Length; i++)
             {
+                if (user.BlacklistedTags.Any(t => t.Tag.TagName == databaseTags[i].TagName))
+                    continue;
+
                 var blacklistedTag = new Models.UserBlacklistedTag()
                 {
                     User = user,
                     Tag = databaseTags[i]
                 };
 
-                user.BlacklistedTags.Add(blacklistedTag);
                 _context.UserBlacklistedTags.Add(blacklistedTag);
-                databaseTags[i].Blacklisters.Add(blacklistedTag);
             }
 
             foreach (var newTagName in sanitizedTags.Except(databaseTags.Select(t => t.TagName)))
@@ -173,9 +172,7 @@ namespace ElizaBot.CommandModules
                     Tag = newTag
                 };
 
-                user.BlacklistedTags.Add(blacklistedTag);
                 _context.UserBlacklistedTags.Add(blacklistedTag);
-                newTag.Blacklisters.Add(blacklistedTag);
             }
 
             await _context.SaveChangesAsync();
@@ -195,8 +192,6 @@ namespace ElizaBot.CommandModules
 
             foreach (var blacklistedTag in blacklistedTags)
             {
-                blacklistedTag.User.BlacklistedTags.Remove(blacklistedTag);
-                blacklistedTag.Tag.Blacklisters.Remove(blacklistedTag);
                 _context.UserBlacklistedTags.Remove(blacklistedTag);
             }
 
