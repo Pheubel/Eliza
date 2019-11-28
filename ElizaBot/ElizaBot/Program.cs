@@ -22,6 +22,8 @@ namespace ElizaBot
 
             ConfigureServices(serviceCollection, settings);
 
+            MigrateDatabase(settings);
+
             return ClientServiceBuilder.CreateDefaultBuilder(serviceCollection: serviceCollection)
                 .UseToken(settings.BotToken)
                 .UseEventHandler(options =>
@@ -29,6 +31,15 @@ namespace ElizaBot
                     options.UseCommandsWithPrefix(settings.Prefix);
                     options.UseLogHandler(EventHandlers.LogHandler);
                 }).Build();
+        }
+
+        private static void MigrateDatabase(AppSettings settings)
+        {
+            var builder = new DbContextOptionsBuilder<ApplicationContext>();
+            builder.UseSqlite(settings.ConnectionString);
+
+            using var context = new ApplicationContext(builder.Options);
+            context.Database.Migrate();
         }
 
         private static void ConfigureServices(IServiceCollection services, AppSettings settings)
