@@ -1,0 +1,4 @@
+{
+  "BotToken": "heya",
+  "ConnectionString": "Data Source=devDb.db Version=3"
+}
