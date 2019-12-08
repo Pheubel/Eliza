@@ -1,4 +1,5 @@
-﻿using Discord.Commands;
+﻿using Discord;
+using Discord.Commands;
 using ElizaBot.DatabaseContexts;
 using ElizaBot.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,68 @@ namespace ElizaBot.CommandModules
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
+
+        [Command("list tags")]
+        public async Task ListTags()
+        {
+            var user = await _context.Users
+                .Include(u => u.SubscribedTags).ThenInclude(st => st.Tag)
+                .Include(u => u.BlacklistedTags).ThenInclude(st => st.Tag)
+                .FirstOrDefaultAsync(u => u.UserId == Context.User.Id);
+
+            if (user == null || (user.SubscribedTags.Count == 0 && user.BlacklistedTags.Count == 0))
+            {
+                await ReplyAsync("You do not have any subscriptions or blacklisted tags.");
+                return;
+            }
+
+            var userPrivateChannel = await Context.User.GetOrCreateDMChannelAsync();
+            StringBuilder sb = new StringBuilder();
+
+            if (user.SubscribedTags.Count > 0)
+            {
+                foreach (var tagSubscription in user.SubscribedTags)
+                {
+                    sb.Append(tagSubscription.Tag.TagName + ", ");
+                }
+                sb.Remove(sb.Length - 2, 2);
+
+                var embedBuilder = new EmbedBuilder
+                {
+                    Title = "Subscribed tags",
+                    Description = sb.ToString(),
+                    Color = Color.Green
+                };
+
+                await userPrivateChannel.SendMessageAsync(embed: embedBuilder.Build());
+
+                sb.Clear();
+            }
+
+            if (user.BlacklistedTags.Count > 0)
+            {
+                foreach (var tagBlacklisting in user.BlacklistedTags)
+                {
+                    sb.Append(tagBlacklisting.Tag.TagName + ", ");
+                }
+                sb.Remove(sb.Length - 2, 2);
+
+                var embedBuilder = new EmbedBuilder
+                {
+                    Title = "Blacklisted tags",
+                    Description = sb.ToString(),
+                    Color = Color.Red
+                };
+
+                await userPrivateChannel.SendMessageAsync(embed: embedBuilder.Build());
+
+                sb.Clear();
+            }
+
+            if (Context.Channel.Id != userPrivateChannel.Id)
+                await ReplyAsync("A list subscriptions and blacklists has been sent to your Dm's.");
+        }
+
 
         [Command("tag")]
         public async Task Tag(params string[] tags)
@@ -54,7 +117,7 @@ namespace ElizaBot.CommandModules
 
             var sanitizedTags = tags.ToLower();
 
-            var user = await _context.Users.Include(u=> u.SubscribedTags).FirstOrDefaultAsync(u => u.UserId == Context.User.Id);
+            var user = await _context.Users.Include(u => u.SubscribedTags).FirstOrDefaultAsync(u => u.UserId == Context.User.Id);
             if (user == null)
             {
                 user = new Models.User()
@@ -95,7 +158,7 @@ namespace ElizaBot.CommandModules
                     Tag = newTag
                 };
 
-                
+
                 _context.UserSubscribedTags.Add(subscription);
             }
 
