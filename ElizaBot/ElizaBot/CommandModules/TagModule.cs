@@ -40,46 +40,76 @@ namespace ElizaBot.CommandModules
 
             if (user.SubscribedTags.Count > 0)
             {
-                foreach (var tagSubscription in user.SubscribedTags)
-                {
-                    sb.Append(tagSubscription.Tag.TagName + ", ");
-                }
-                sb.Remove(sb.Length - 2, 2);
-
                 var embedBuilder = new EmbedBuilder
                 {
                     Title = "Subscribed tags",
-                    Description = sb.ToString(),
                     Color = Color.Green
                 };
 
-                await userPrivateChannel.SendMessageAsync(embed: embedBuilder.Build());
+                foreach (var tagSubscription in user.SubscribedTags.OrderBy(t => t.Tag.TagName))
+                {
+                    sb.Append(tagSubscription.Tag.TagName + ", ");
 
-                sb.Clear();
+                    if(sb.Length > 1800)
+                    {
+                        sb.Remove(sb.Length - 2, 2);
+                        embedBuilder.Description = sb.ToString();
+
+                        await userPrivateChannel.SendMessageAsync(embed: embedBuilder.Build());
+
+                        sb.Clear();
+                        embedBuilder.Title = string.Empty;
+                    }
+                }
+
+                if (sb.Length > 0)
+                {
+                    sb.Remove(sb.Length - 2, 2);
+                    embedBuilder.Description = sb.ToString();
+
+                    await userPrivateChannel.SendMessageAsync(embed: embedBuilder.Build());
+
+                    sb.Clear();
+                }
             }
 
             if (user.BlacklistedTags.Count > 0)
             {
-                foreach (var tagBlacklisting in user.BlacklistedTags)
-                {
-                    sb.Append(tagBlacklisting.Tag.TagName + ", ");
-                }
-                sb.Remove(sb.Length - 2, 2);
-
                 var embedBuilder = new EmbedBuilder
                 {
                     Title = "Blacklisted tags",
-                    Description = sb.ToString(),
                     Color = Color.Red
                 };
 
-                await userPrivateChannel.SendMessageAsync(embed: embedBuilder.Build());
+                foreach (var tagBlacklisting in user.BlacklistedTags.OrderBy(t => t.Tag.TagName))
+                {
+                    sb.Append(tagBlacklisting.Tag.TagName + ", ");
 
-                sb.Clear();
+                    if (sb.Length > 1800)
+                    {
+                        sb.Remove(sb.Length - 2, 2);
+                        embedBuilder.Description = sb.ToString();
+
+                        await userPrivateChannel.SendMessageAsync(embed: embedBuilder.Build());
+
+                        sb.Clear();
+                        embedBuilder.Title = string.Empty;
+                    }
+                }
+
+                if (sb.Length > 0)
+                {
+                    sb.Remove(sb.Length - 2, 2);
+                    embedBuilder.Description = sb.ToString();
+
+                    await userPrivateChannel.SendMessageAsync(embed: embedBuilder.Build());
+
+                    sb.Clear();
+                }
             }
 
             if (Context.Channel.Id != userPrivateChannel.Id)
-                await ReplyAsync("A list subscriptions and blacklists has been sent to your Dm's.");
+                await ReplyAsync("A list subscriptions and blacklists has been sent to your DM's.");
         }
 
 
@@ -163,7 +193,7 @@ namespace ElizaBot.CommandModules
             }
 
             await _context.SaveChangesAsync();
-            await ReplyAsync("succesfully subscribed to the tags.");
+            await ReplyAsync("Succesfully subscribed to the tags.");
         }
 
         [Command("unsubscribe")]
@@ -183,7 +213,7 @@ namespace ElizaBot.CommandModules
 
             if (subscribedTags.Length != 0)
                 await _context.SaveChangesAsync();
-            await ReplyAsync("succesfully unsubscribed from the tags.");
+            await ReplyAsync("Succesfully unsubscribed from the tags.");
         }
 
         [Command("blacklist")]
@@ -239,7 +269,7 @@ namespace ElizaBot.CommandModules
             }
 
             await _context.SaveChangesAsync();
-            await ReplyAsync("succesfully blacklisted the tags.");
+            await ReplyAsync("Succesfully blacklisted the tags.");
         }
 
 
@@ -260,7 +290,7 @@ namespace ElizaBot.CommandModules
 
             if (blacklistedTags.Length != 0)
                 await _context.SaveChangesAsync();
-            await ReplyAsync("succesfully removed the tags from your blacklist.");
+            await ReplyAsync("Succesfully removed the tags from your blacklist.");
         }
     }
 }
