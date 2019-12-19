@@ -1,9 +1,5 @@
 ﻿using ElizaBot.Models;
-using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ElizaBot.DatabaseContexts
 {
