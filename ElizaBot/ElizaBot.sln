@@ -5,13 +5,13 @@ VisualStudioVersion = 16.0.29418.71
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElizaBot", "ElizaBot\ElizaBot.csproj", "{ED3E5785-1316-49D8-A8E1-65F347C50311}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElizaWebClient.Server", "ElizaWebClient\Server\ElizaWebClient.Server.csproj", "{11AA38D6-7E27-4A57-94CB-0289DE4BF41B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElizaWebClient.Server", "ElizaWebClient\Server\ElizaWebClient.Server.csproj", "{11AA38D6-7E27-4A57-94CB-0289DE4BF41B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElizaWebClient.Client", "ElizaWebClient\Client\ElizaWebClient.Client.csproj", "{409DC3D7-813A-4EDF-BBBC-D84AD1146A40}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElizaWebClient.Client", "ElizaWebClient\Client\ElizaWebClient.Client.csproj", "{409DC3D7-813A-4EDF-BBBC-D84AD1146A40}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElizaWebClient.Shared", "ElizaWebClient\Shared\ElizaWebClient.Shared.csproj", "{D837A57C-764D-4C52-A5C3-73278C2205C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElizaWebClient.Shared", "ElizaWebClient\Shared\ElizaWebClient.Shared.csproj", "{D837A57C-764D-4C52-A5C3-73278C2205C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElizaHost.Shared", "ElizaHost.Shared\ElizaHost.Shared.csproj", "{5A2A5117-4A9A-42BD-96FF-4ABEEAFBC0AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElizaHost.Shared", "ElizaHost.Shared\ElizaHost.Shared.csproj", "{5A2A5117-4A9A-42BD-96FF-4ABEEAFBC0AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

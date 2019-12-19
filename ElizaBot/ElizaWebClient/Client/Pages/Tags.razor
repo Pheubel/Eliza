@@ -1,0 +1,58 @@
+﻿@page "/tags"
+
+@using ElizaWebClient.Shared.Models
+
+@inject HttpClient Http
+
+<h3>Tags</h3>
+
+@ex
+
+<table class="TFtable" cellpadding="1" cellspacing="1">
+    <tr style="background-color:#2d364d; color:#FFFFFF ;border-width:2px;border-color:#0A2464;">
+        <td align="center">Tag Name</td>
+        <td align="center">Subscriber Count</td>
+        <td align="center">Blacklister Count</td>
+    </tr>
+    @foreach (TagMetaData tag in _elizaTags)
+    {
+        <tr style="border-style:dashed;border-width:2px;border-color:#659EC7;">
+            <td align="center">
+                <span>
+                    @tag.TagName
+                </span>
+            </td>
+            <td align="center">
+                <span>
+                    @tag.SubscriberCount
+                </span>
+            </td>
+            <td align="center">
+                <span>
+                    @tag.BlacklisterCount
+                </span>
+            </td>
+        </tr>
+    }
+</table>
+
+
+@code {
+    string ex = string.Empty;
+
+    TagMetaData[] _elizaTags = Array.Empty<TagMetaData>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _elizaTags = await Http.GetJsonAsync<TagMetaData[]>("api/tags");
+        }
+        catch (Exception exp)
+        {
+            ex = exp.Message;
+            throw;
+        }
+
+    }
+}

@@ -2,6 +2,8 @@
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #222;
+    color: #eae4e4;
 }
 
 a, .btn-link {
@@ -41,10 +43,10 @@ app {
             margin-left: 1.5rem;
         }
 
-.main .top-row a:first-child {
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+        .main .top-row a:first-child {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
 .sidebar {
     background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
@@ -117,6 +119,34 @@ app {
     color: red;
 }
 
+
+
+.TFtable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    /* tr: background-color:#2d364d ; color:#FFFFFF ;border-style:dashed;border-width:2px;border-color:#0A2464; */
+
+    .TFtable td {
+        padding: 7px;
+        border: #4e95f4 1px solid;
+    }
+    /* provide some minimal visual accomodation for IE8 and below */
+    .TFtable tr {
+        background: #2d364d;
+    }
+        /*  Define the background color for all the ODD background rows  */
+        .TFtable tr:nth-child(odd) {
+            background: #333;
+        }
+        /*  Define the background color for all the EVEN background rows  */
+        .TFtable tr:nth-child(even) {
+            background: #444;
+        }
+
+
+
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;
@@ -129,12 +159,12 @@ app {
     z-index: 1000;
 }
 
-#blazor-error-ui .dismiss {
-    cursor: pointer;
-    position: absolute;
-    right: 0.75rem;
-    top: 0.5rem;
-}
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }
 
 @media (max-width: 767.98px) {
     .main .top-row:not(.auth) {
