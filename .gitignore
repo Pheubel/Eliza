@@ -353,3 +353,4 @@ MigrationBackup/
 .ionide/
 ElizaBot/ElizaBot/appsettings.json
 *.db
+ElizaBot/ElizaWebClient/Server/appsettings.json
