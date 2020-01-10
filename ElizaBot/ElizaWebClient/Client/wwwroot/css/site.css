@@ -126,8 +126,6 @@ app {
     border-collapse: collapse;
 }
 
-    /* tr: background-color:#2d364d ; color:#FFFFFF ;border-style:dashed;border-width:2px;border-color:#0A2464; */
-
     .TFtable td {
         padding: 7px;
         border: #4e95f4 1px solid;

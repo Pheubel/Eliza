@@ -18,8 +18,6 @@ namespace ElizaWebClient.Server
                     .AddJsonFile("appsettings.json", optional: false)
                     .Build())
                 .UseStartup<Startup>()
-                .UseDefaultServiceProvider(options =>
-                    options.ValidateScopes = false)
                 .Build();
     }
 }

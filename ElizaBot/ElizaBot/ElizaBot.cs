@@ -1,16 +1,11 @@
 ﻿using Discord;
 using Discord.Commands;
-using Discord.Rest;
 using Discord.WebSocket;
-using ElizaBot.DatabaseContexts;
-using ElizaBot.Handlers;
-using ElizaBot.Services;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Concurrent;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,23 +16,27 @@ namespace ElizaBot
     {
         private readonly IServiceProvider _provider;
         private readonly DiscordSocketClient _client;
-        private readonly DiscordRestClient _restClient;
         private readonly CommandService _commands;
-        private readonly BotConfig _config;
+        private readonly BotConfig _settings;
+        private readonly ILogger<ElizaBot> _logger;
 
         private IServiceScope _scope;
 
+        private readonly CommandHandler _handler;
+
         public ElizaBot(IServiceProvider provider,
-                        DiscordSocketClient client,
-                        DiscordRestClient restClient,
-                        CommandService commands,
-                        IOptions<BotConfig> botConfig)
+                       DiscordSocketClient client,
+                       CommandService commands,
+                       IOptions<BotConfig> botConfig,
+                       ILogger<ElizaBot> logger)
         {
             _provider = provider ?? throw new ArgumentNullException(nameof(provider));
             _client = client ?? throw new ArgumentNullException(nameof(client));
-            _restClient = restClient ?? throw new ArgumentNullException(nameof(restClient));
             _commands = commands ?? throw new ArgumentNullException(nameof(commands));
-            _config = botConfig?.Value ?? throw new ArgumentNullException(nameof(botConfig));
+            _settings = botConfig?.Value ?? throw new ArgumentNullException(nameof(botConfig));
+            _logger = logger;
+
+            _handler = new CommandHandler(_client, _commands, _settings,logger);
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -45,18 +44,20 @@ namespace ElizaBot
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-us");
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
 
+            _logger?.LogInformation("Setting up DinkBot for execution");
+
             IServiceScope scope = default;
             try
             {
                 _scope = _provider.CreateScope();
 
-                await _commands.AddModulesAsync(typeof(ElizaBot).Assembly, _scope.ServiceProvider);
+                _handler.Initialize(_scope);
 
-                EventHandlers.SubscribeTohandlers(_client, _commands,_config,_provider);
+                await _commands.AddModulesAsync(typeof(ElizaBot).Assembly, _scope.ServiceProvider);
 
                 await StartClient(stoppingToken);
 
-                await Task.Delay(-1,stoppingToken);
+                await Task.Delay(-1, stoppingToken);
             }
             catch (Exception ex)
             {
@@ -69,6 +70,8 @@ namespace ElizaBot
                     scope?.Dispose();
                 }
 
+                _logger.LogError(ex, "An exception was triggered during set-up.");
+
                 throw;
             }
         }
@@ -79,10 +82,8 @@ namespace ElizaBot
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                await _client.LoginAsync(TokenType.Bot, _config.BotToken);
+                await _client.LoginAsync(TokenType.Bot, _settings.BotToken);
                 await _client.StartAsync();
-
-                await _restClient.LoginAsync(TokenType.Bot, _config.BotToken);
             }
             catch (Exception)
             {

@@ -29,7 +29,7 @@ namespace ElizaWebClient.Server
         {
             services.Configure<BotConfig>(_configuration.GetSection(nameof(BotConfig)));
 
-            services.AddMvc();
+            services.AddMvcCore();
             services.AddResponseCompression(opts =>
             {
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
