@@ -1,12 +1,10 @@
-﻿using Discord.WebSocket;
-using Discord;
-using Discord.Rest;
+﻿using Discord;
 using Discord.Commands;
+using Discord.Rest;
+using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.Extensions.Options;
+using System;
 
 namespace ElizaBot.Extensions
 {

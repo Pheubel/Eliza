@@ -1,14 +1,14 @@
+using ElizaBot;
+using ElizaBot.DatabaseContexts;
+using ElizaBot.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
-using ElizaBot;
-using ElizaBot.Extensions;
-using Microsoft.Extensions.Configuration;
-using ElizaBot.DatabaseContexts;
-using Microsoft.EntityFrameworkCore;
 
 namespace ElizaWebClient.Server
 {
@@ -36,7 +36,8 @@ namespace ElizaWebClient.Server
                     new[] { "application/octet-stream" });
             });
 
-            services.AddDbContext<ApplicationContext>(options => {
+            services.AddDbContext<ApplicationContext>(options =>
+            {
                 options.UseSqlite(_configuration.GetConnectionString("ConnectionString"));
             });
 

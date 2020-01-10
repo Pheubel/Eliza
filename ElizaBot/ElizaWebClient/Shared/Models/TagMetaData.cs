@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ElizaWebClient.Shared.Models
+﻿namespace ElizaWebClient.Shared.Models
 {
     public class TagMetaData
     {

@@ -36,7 +36,7 @@ namespace ElizaBot
             _settings = botConfig?.Value ?? throw new ArgumentNullException(nameof(botConfig));
             _logger = logger;
 
-            _handler = new CommandHandler(_client, _commands, _settings,logger);
+            _handler = new CommandHandler(_client, _commands, _settings, logger);
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)

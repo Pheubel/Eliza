@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ElizaBot.Extensions
+﻿namespace ElizaBot.Extensions
 {
     public static class StringArrayExtensions
     {

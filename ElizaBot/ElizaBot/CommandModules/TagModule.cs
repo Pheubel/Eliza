@@ -50,7 +50,7 @@ namespace ElizaBot.CommandModules
                 {
                     sb.Append(tagSubscription.Tag.TagName + ", ");
 
-                    if(sb.Length > 1800)
+                    if (sb.Length > 1800)
                     {
                         sb.Remove(sb.Length - 2, 2);
                         embedBuilder.Description = sb.ToString();
