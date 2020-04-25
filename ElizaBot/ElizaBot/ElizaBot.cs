@@ -44,7 +44,7 @@ namespace ElizaBot
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-us");
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
 
-            _logger?.LogInformation("Setting up DinkBot for execution");
+            _logger?.LogInformation("Setting up ElizaBot for execution");
 
             IServiceScope scope = default;
             try
