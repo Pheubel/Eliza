@@ -1,0 +1,44 @@
+﻿@page "/tags/mylist"
+@attribute [Authorize]
+
+@using Eliza.Shared
+
+@inject Eliza.Client.Services.Core.ITagApi TagApi
+
+<h3>Subscribed tags</h3>
+
+<div>
+    @foreach (var tag in _subscribedTags)
+    {
+        <span>@tag</span><br>
+    }
+</div>
+
+<h3>Blacklisted tags</h3>
+
+<div>
+    @foreach (var tag in _blacklistedTags)
+    {
+        <span>@tag</span><br>
+    }
+</div>
+
+@code {
+    List<string> _subscribedTags = new List<string>();
+    List<string> _blacklistedTags = new List<string>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var userTaglist = await TagApi.GetUserTaglistAsync();
+
+            _subscribedTags.AddRange(userTaglist.SubscribedTags);
+            _blacklistedTags.AddRange(userTaglist.BlacklistedTags);
+        }
+        catch
+        {
+            throw;
+        }
+    }
+}

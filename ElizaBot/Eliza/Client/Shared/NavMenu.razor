@@ -1,0 +1,66 @@
+﻿@inject DiscordAuthenticationStateProvider AuthState
+
+<div class="top-row pl-4 navbar navbar-dark">
+    <AuthorizeView>
+        <Authorized>
+            <a class="navbar-brand" href="api/authentication/logout">Log out</a>
+            <img src=@string.Format("https://cdn.discordapp.com/avatars/{0}/{1}.jpg",AuthState.UserId,AuthState.AvatarHash) class="rounded-circle" style="max-height:100%; width:auto" />
+        </Authorized>
+        <NotAuthorized>
+            <a class="navbar-brand" href="api/authentication/login">Log in!</a>
+        </NotAuthorized>
+    </AuthorizeView>
+    <button class="navbar-toggler" @onclick="ToggleNavMenu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <ul class="nav flex-column">
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="commands">
+                <span class="oi oi-terminal" aria-hidden="true"></span> Commands
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="tags">
+                <span class="oi oi-text" aria-hidden="true"></span> Tags
+            </NavLink>
+        </li>
+        <AuthorizeView>
+            <Authorized>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="tags/mylist">
+                        <span class="oi oi-star" aria-hidden="true"></span> My Tag List
+                    </NavLink>
+                </li>
+            </Authorized>
+        </AuthorizeView>
+        <AuthorizeView Policy="@Eliza.Shared.Constants.IsBotOwner">
+            <Authorized>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="settings">
+                        <span class="oi oi-cog" aria-hidden="true"></span> Settings
+                    </NavLink>
+                </li>
+            </Authorized>
+        </AuthorizeView>
+    </ul>
+</div>
+
+@code {
+
+    private bool collapseNavMenu = true;
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}
