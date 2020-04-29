@@ -79,7 +79,7 @@ namespace Eliza.Database.Services
             var databaseTags = await _context.Tags.Where(tag => sanitizedTags.Contains(tag.TagName)).ToArrayAsync();
 
             // removes the blacklisted tags that will be marked as subscribed
-            user.BlacklistedTags.RemoveAll(t => databaseTags.Any(dbt => dbt.Id == t.TagId));
+            user.BlacklistedTags?.RemoveAll(t => databaseTags.Any(dbt => dbt.Id == t.TagId));
 
             for (int i = 0; i < databaseTags.Length; i++)
             {
@@ -161,7 +161,7 @@ namespace Eliza.Database.Services
             var databaseTags = await _context.Tags.Where(tag => sanitizedTags.Contains(tag.TagName)).ToArrayAsync();
 
             // removes the subscribed tags that will be marked as blacklisted
-            user.SubscribedTags.RemoveAll(t => databaseTags.Any(dbt => dbt.Id == t.TagId));
+            user.SubscribedTags?.RemoveAll(t => databaseTags.Any(dbt => dbt.Id == t.TagId));
 
             for (int i = 0; i < databaseTags.Length; i++)
             {
