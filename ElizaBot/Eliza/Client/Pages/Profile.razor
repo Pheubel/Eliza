@@ -1,0 +1,168 @@
+﻿@page "/Profile"
+@attribute [Authorize]
+
+@inject DiscordAuthenticationStateProvider AuthState
+@inject Eliza.Client.Services.Core.ITagApi TagApi
+
+
+
+@if (profileInfo == null)
+{
+    <div class="container-fluid d-flex" style="min-height:95vh">
+        <div class="row justify-content-center align-items-center w-100" style="padding-left:inherit;margin:inherit">
+            <div class="spinner-border" style="width: 5rem; height: 5rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                profile info here
+            </div>
+            <div class="col-sm-auto">
+                <span class="display-3 align-middle">@AuthState.Username </span>
+                <img src=@string.Format("https://cdn.discordapp.com/avatars/{0}/{1}.webp",AuthState.UserId,AuthState.AvatarHash) class="rounded-circle img-thumbnail img-fluid" />
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col">
+                <div class="rounded border border-success">
+                    <div class="m-2">
+                        @if (_subscribedTags == null)
+                        {
+                            <div class="container-fluid d-flex">
+                                <div class="row justify-content-center align-items-center w-100" style="padding-left:inherit;margin:inherit">
+                                    <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-outline-secondary" type="button" @onclick="(async () => await SubmitSubscribedTagsAsync())">Button</button>
+                                </div>
+                                <input type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" @bind="_subscribedTagsValue">
+                            </div>
+                            <strong>
+                                @foreach (var tag in _subscribedTags)
+                                {
+                                    <span class="badge badge-secondary">@tag</span>
+                                }
+                            </strong>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col">
+                <div class="rounded border border-danger">
+                    <div class="m-2">
+                        @if (_blacklistedTags == null)
+                        {
+                            <div class="container-fluid d-flex">
+                                <div class="row justify-content-center align-items-center w-100" style="padding-left:inherit;margin:inherit">
+                                    <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-outline-secondary" type="button" @onclick="(async () => await SubmitBlacklistedTagsAsync())">Button</button>
+                                </div>
+                                <input type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" @bind="_blacklistedTagsValue">
+                            </div>
+                            <strong>
+                                @foreach (var tag in _blacklistedTags)
+                                {
+                                    <span class="badge badge-secondary">@tag</span>
+                                }
+                            </strong>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@code {
+    object profileInfo;
+
+    string _blacklistedTagsValue;
+    string _subscribedTagsValue;
+
+    List<string> _subscribedTags;
+    List<string> _blacklistedTags;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await AuthState.GetAuthenticationStateAsync();
+
+        var tagFetchTask = TagApi.GetUserTaglistAsync();
+
+        profileInfo = new object();
+        StateHasChanged();
+
+        var userTagList = await tagFetchTask;
+
+        _subscribedTags = new List<string>(userTagList.SubscribedTags);
+        _blacklistedTags = new List<string>(userTagList.BlacklistedTags);
+    }
+
+    protected async Task SubmitBlacklistedTagsAsync()
+    {
+        var tagsToBlacklist = _blacklistedTagsValue.ToLower()
+            .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+            .Where(t => !_blacklistedTags.Contains(t))
+            .Distinct()
+            .ToArray();
+
+        if (tagsToBlacklist.Length == 0)
+        {
+            // mark an error
+            return;
+        }
+
+        await TagApi.BlacklistAsync(tagsToBlacklist);
+
+        _blacklistedTags.AddRange(tagsToBlacklist);
+        _subscribedTags.RemoveAll(t => tagsToBlacklist.Contains(t));
+
+        _blacklistedTagsValue = string.Empty;
+    }
+
+    protected async Task SubmitSubscribedTagsAsync()
+    {
+        var tagsToSubscribe = _subscribedTagsValue.ToLower()
+            .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+            .Where(t => !_subscribedTags.Contains(t))
+            .Distinct()
+            .ToArray();
+
+        if (tagsToSubscribe.Length == 0)
+        {
+            // mark an error
+            return;
+        }
+
+        await TagApi.SubscribeAsync(tagsToSubscribe);
+
+        _subscribedTags.AddRange(tagsToSubscribe);
+        _blacklistedTags.RemoveAll(t => tagsToSubscribe.Contains(t));
+
+        _subscribedTagsValue = string.Empty;
+    }
+}
