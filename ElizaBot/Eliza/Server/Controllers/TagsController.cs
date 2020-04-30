@@ -115,7 +115,7 @@ namespace Eliza.Server.Controllers
 
             var userId = ulong.Parse(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
 
-            await _tagService.RemoveSubscribedTagsFromUser(userId, tags);
+            await _tagService.RemoveBlacklistFromUser(userId, tags);
             return Ok();
         }
     }
