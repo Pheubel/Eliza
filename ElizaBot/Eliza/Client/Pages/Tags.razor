@@ -1,38 +1,42 @@
 ﻿@page "/tags"
 
-@using Eliza.Shared 
+@using Eliza.Shared
 
 @inject Eliza.Client.Services.Core.ITagApi TagApi
 
 <h3>Tags</h3>
+    <table class="table table-striped table-sm table-dark">
+        <thead>
+            <tr>
+                <td scope="col" align="center">Tag Name</td>
+                <td scope="col" align="center">Subscriber Count</td>
+                <td scope="col" align="center">Blacklister Count</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (TagMetaDataDTO tag in _elizaTags)
+            {
+                <tr>
+                    <td align="center">
+                        <span>
+                            @tag.TagName
+                        </span>
+                    </td>
+                    <td align="center">
+                        <span>
+                            @tag.SubscriberCount
+                        </span>
+                    </td>
+                    <td align="center">
+                        <span>
+                            @tag.BlacklisterCount
+                        </span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 
-<table class="TFtable" cellpadding="1" cellspacing="1">
-    <tr style="background-color:#2d364d; color:#FFFFFF ;border-width:2px;border-color:#0A2464;">
-        <td align="center">Tag Name</td>
-        <td align="center">Subscriber Count</td>
-        <td align="center">Blacklister Count</td>
-    </tr>
-    @foreach (TagMetaDataDTO tag in _elizaTags)
-    {
-        <tr style="border-style:dashed;border-width:2px;border-color:#659EC7;">
-            <td align="center">
-                <span>
-                    @tag.TagName
-                </span>
-            </td>
-            <td align="center">
-                <span>
-                    @tag.SubscriberCount
-                </span>
-            </td>
-            <td align="center">
-                <span>
-                    @tag.BlacklisterCount
-                </span>
-            </td>
-        </tr>
-    }
-</table>
 
 @code {
     TagMetaDataDTO[] _elizaTags = Array.Empty<TagMetaDataDTO>();
