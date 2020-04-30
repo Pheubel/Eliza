@@ -50,12 +50,19 @@ else
                                 </div>
                                 <input type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" @bind="_subscribedTagsValue">
                             </div>
-                            <strong>
+                            <ul class="list-inline">
                                 @foreach (var tag in _subscribedTags)
                                 {
-                                    <span class="badge badge-secondary">@tag</span>
+                                    <li class="border-secondary list-inline-item badge badge-secondary d-inline-flex">
+                                        <button type="button" class="btn btn-dark d-flex" @onclick="(async () => await UnsubscribeTagAsync(tag))" style="padding:0;margin-right:3px; border-radius:50%;">
+                                            <svg aria-hidden="true" width="12" height="12" viewBox="0 0 12 12">
+                                                <g fill="none" fill-rule="evenodd" aria-hidden="true"><path d="M0 0h12v12H0"></path><path class="fill" fill="#FFFFFF" d="M9.5 3.205L8.795 2.5 6 5.295 3.205 2.5l-.705.705L5.295 6 2.5 8.795l.705.705L6 6.705 8.795 9.5l.705-.705L6.705 6"></path></g>
+                                            </svg>
+                                        </button>
+                                        <span>@tag</span>
+                                    </li>
                                 }
-                            </strong>
+                            </ul>
                         }
                     </div>
                 </div>
@@ -83,12 +90,19 @@ else
                                 </div>
                                 <input type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" @bind="_blacklistedTagsValue">
                             </div>
-                            <strong>
+                            <ul class="list-inline">
                                 @foreach (var tag in _blacklistedTags)
                                 {
-                                    <span class="badge badge-secondary">@tag</span>
+                                    <li class="border-secondary list-inline-item badge badge-secondary d-inline-flex">
+                                        <button type="button" class="btn btn-dark d-flex" @onclick="(async () => await UnblacklistTagAsync(tag))" style="padding:0;margin-right:3px; border-radius:50%;">
+                                            <svg aria-hidden="true" width="12" height="12" viewBox="0 0 12 12">
+                                                <g fill="none" fill-rule="evenodd" aria-hidden="true"><path d="M0 0h12v12H0"></path><path class="fill" fill="#FFFFFF" d="M9.5 3.205L8.795 2.5 6 5.295 3.205 2.5l-.705.705L5.295 6 2.5 8.795l.705.705L6 6.705 8.795 9.5l.705-.705L6.705 6"></path></g>
+                                            </svg>
+                                        </button>
+                                        <span>@tag</span>
+                                    </li>
                                 }
-                            </strong>
+                            </ul>
                         }
                     </div>
                 </div>
@@ -164,5 +178,18 @@ else
         _blacklistedTags.RemoveAll(t => tagsToSubscribe.Contains(t));
 
         _subscribedTagsValue = string.Empty;
+    }
+
+    protected async Task UnsubscribeTagAsync(string tag)
+    {
+        await TagApi.UnsubscribeAsync(new[] { tag });
+
+        _subscribedTags.Remove(tag);
+    }
+    protected async Task UnblacklistTagAsync(string tag)
+    {
+        await TagApi.UnblacklistAsync(new[] { tag });
+
+        _blacklistedTags.Remove(tag);
     }
 }
