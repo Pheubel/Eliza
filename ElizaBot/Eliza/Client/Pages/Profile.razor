@@ -44,12 +44,12 @@ else
                         }
                         else
                         {
-                            <div class="input-group mb-3">
+                            <form class="input-group mb-3" @onsubmit="(async () => await SubmitSubscribedTagsAsync())">
                                 <div class="input-group-prepend">
-                                    <button class="btn btn-outline-secondary" type="button" @onclick="(async () => await SubmitSubscribedTagsAsync())">Button</button>
+                                    <button class="btn btn-outline-secondary" type="submit">Add tags</button>
                                 </div>
-                                <input type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" @bind="_subscribedTagsValue">
-                            </div>
+                                <input type="text" class="form-control" placeholder="Example: tag1 tag2" aria-label="Example text with button addon" aria-describedby="button-addon1" @bind-value="_subscribedTagsValue">
+                            </form>
                             <ul class="list-inline">
                                 @foreach (var tag in _subscribedTags)
                                 {
@@ -84,12 +84,12 @@ else
                         }
                         else
                         {
-                            <div class="input-group mb-3">
+                            <form class="input-group mb-3" @onclick="(async () => await SubmitBlacklistedTagsAsync())">
                                 <div class="input-group-prepend">
-                                    <button class="btn btn-outline-secondary" type="button" @onclick="(async () => await SubmitBlacklistedTagsAsync())">Button</button>
+                                    <button class="btn btn-outline-secondary" type="button">Add tags</button>
                                 </div>
-                                <input type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" @bind="_blacklistedTagsValue">
-                            </div>
+                                <input type="text" class="form-control" placeholder="Example: tag1 tag2" aria-label="Example text with button addon" aria-describedby="button-addon1" @bind="_blacklistedTagsValue">
+                            </form>
                             <ul class="list-inline">
                                 @foreach (var tag in _blacklistedTags)
                                 {
