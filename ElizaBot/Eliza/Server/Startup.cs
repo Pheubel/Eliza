@@ -91,7 +91,11 @@ namespace Eliza.Server
             services.AddMemoryCache();
             services.Configure<ClientRateLimitOptions>(Configuration.GetSection("ClientRateLimiting"));
             services.Configure<ClientRateLimitPolicies>(Configuration.GetSection("ClientRateLimitPolicies"));
+            services.Configure<IpRateLimitOptions>(Configuration.GetSection("IpRateLimiting"));
+            services.Configure<IpRateLimitPolicies>(Configuration.GetSection("IpRateLimitPolicies"));
             services.AddSingleton<IClientPolicyStore, MemoryCacheClientPolicyStore>();
+            services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
+            services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
             services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
@@ -116,6 +120,7 @@ namespace Eliza.Server
             }
 
             app.UseClientRateLimiting();
+            app.UseIpRateLimiting();
 
             app.UseHttpsRedirection();
             app.UseBlazorFrameworkFiles();
