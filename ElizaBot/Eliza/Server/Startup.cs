@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using Eliza.Shared;
+using AspNetCoreRateLimit;
+using Microsoft.AspNetCore.Http;
 
 namespace Eliza.Server
 {
@@ -85,6 +87,15 @@ namespace Eliza.Server
                 options.AddPolicy(Constants.IsBotOwner, policy => policy.RequireClaim(Constants.IsBotOwner, "true"));
             });
 
+            services.AddOptions();
+            services.AddMemoryCache();
+            services.Configure<ClientRateLimitOptions>(Configuration.GetSection("ClientRateLimiting"));
+            services.Configure<ClientRateLimitPolicies>(Configuration.GetSection("ClientRateLimitPolicies"));
+            services.AddSingleton<IClientPolicyStore, MemoryCacheClientPolicyStore>();
+            services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
@@ -103,6 +114,8 @@ namespace Eliza.Server
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseClientRateLimiting();
 
             app.UseHttpsRedirection();
             app.UseBlazorFrameworkFiles();
