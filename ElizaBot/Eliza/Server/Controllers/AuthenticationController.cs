@@ -14,7 +14,7 @@ namespace Eliza.Server.Controllers
     public class AuthenticationController : ControllerBase
     {
         [HttpGet("login")]
-        [HttpPost("logout")]
+        [HttpPost("login")]
         public IActionResult LogIn()
         {
             return Challenge(new AuthenticationProperties { RedirectUri = "/" }, DiscordAuthenticationDefaults.AuthenticationScheme);
