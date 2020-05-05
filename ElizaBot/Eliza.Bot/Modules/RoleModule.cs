@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using Eliza.Bot.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,12 +11,20 @@ namespace Eliza.Bot.Modules
 {
     public class RoleModule : ModuleBase
     {
+        private readonly IRoleService _roleService;
+
+        public RoleModule(IRoleService roleService)
+        {
+            _roleService = roleService ?? throw new ArgumentNullException(nameof(roleService));
+        }
+
         [Command("give role")]
         public async Task GiveRoleAsync(IRole role)
         {
             if (!(Context.User is SocketGuildUser user))
                 return;
-            await user.AddRoleAsync(role);
+
+            await _roleService.GiveRoleToUserAsync(user,role);
         }
 
         [Command("take role")]
@@ -23,7 +32,8 @@ namespace Eliza.Bot.Modules
         {
             if (!(Context.User is SocketGuildUser user))
                 return;
-            await user.RemoveRoleAsync(role);
+
+            await _roleService.TakeRoleFromUserAsync(user,role);
         }
     }
 }
