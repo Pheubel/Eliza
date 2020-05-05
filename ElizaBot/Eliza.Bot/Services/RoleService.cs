@@ -3,6 +3,7 @@ using Discord.WebSocket;
 using Eliza.Database.Services;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,6 +25,9 @@ namespace Eliza.Bot.Services
             if (!await _requestableRoleManager.IsRoleRequestableAsync(role.Id))
                 return IRoleService.Result.RoleNotAllowed;
 
+            if (user.RoleIds.Contains(role.Id))
+                return IRoleService.Result.AlreadyHasRole;
+
             await user.AddRoleAsync(role);
             return IRoleService.Result.Success;
         }
@@ -43,6 +47,9 @@ namespace Eliza.Bot.Services
             if (!await _requestableRoleManager.IsRoleRequestableAsync(roleId))
                 return IRoleService.Result.RoleNotAllowed;
 
+            if (user.Roles.Any(r => r.Id == roleId))
+                return IRoleService.Result.AlreadyHasRole;
+
             await user.AddRoleAsync(role);
             return IRoleService.Result.Success;
         }
@@ -51,6 +58,9 @@ namespace Eliza.Bot.Services
         {
             if (!await _requestableRoleManager.IsRoleRequestableAsync(role.Id))
                 return IRoleService.Result.RoleNotAllowed;
+
+            if (!user.RoleIds.Contains(role.Id))
+                return IRoleService.Result.DoesNotHaveRole;
 
             await user.RemoveRoleAsync(role);
             return IRoleService.Result.Success;
@@ -70,6 +80,9 @@ namespace Eliza.Bot.Services
 
             if (!await _requestableRoleManager.IsRoleRequestableAsync(roleId))
                 return IRoleService.Result.RoleNotAllowed;
+
+            if (!user.Roles.Any(r => r.Id == roleId))
+                return IRoleService.Result.DoesNotHaveRole;
 
             await user.RemoveRoleAsync(role);
             return IRoleService.Result.Success;

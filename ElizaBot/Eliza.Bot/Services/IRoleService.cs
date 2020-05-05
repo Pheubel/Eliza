@@ -16,7 +16,9 @@ namespace Eliza.Bot.Services
             GuildNotFound,
             UserNotFound,
             RoleNotFound,
-            RoleNotAllowed
+            RoleNotAllowed,
+            AlreadyHasRole,
+            DoesNotHaveRole
         }
     }
 }
