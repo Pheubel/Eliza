@@ -16,10 +16,10 @@ namespace Eliza.Database.Services
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task AddRoleAsync(ulong roleId, ulong guildId, string roleName)
+        public async Task<bool> AddRoleAsync(ulong roleId, ulong guildId, string roleName)
         {
             if (await _context.RequestableRoles.AnyAsync(r => r.RoleId == roleId))
-                return;
+                return false;
 
             _context.RequestableRoles.Add(new Models.RequestableRole
             {
@@ -29,18 +29,20 @@ namespace Eliza.Database.Services
             });
 
             await _context.SaveChangesAsync();
+            return true;
         }
 
-        public async Task RemoveRoleAsync(ulong roleId)
+        public async Task<bool> RemoveRoleAsync(ulong roleId)
         {
             var role = await _context.RequestableRoles.FirstOrDefaultAsync(r => r.RoleId == roleId);
 
             if (role == null)
-                return;
+                return false;
 
             _context.RequestableRoles.Remove(role);
 
             await _context.SaveChangesAsync();
+            return true;
         }
 
         public async Task UpdateRoleNameAsync(ulong roleId, string newName)
