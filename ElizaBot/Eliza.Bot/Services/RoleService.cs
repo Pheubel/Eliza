@@ -52,7 +52,7 @@ namespace Eliza.Bot.Services
             if (!await _requestableRoleManager.IsRoleRequestableAsync(role.Id))
                 return IRoleService.Result.RoleNotAllowed;
 
-            user.RemoveRoleAsync(role);
+            await user.RemoveRoleAsync(role);
             return IRoleService.Result.Success;
         }
 
