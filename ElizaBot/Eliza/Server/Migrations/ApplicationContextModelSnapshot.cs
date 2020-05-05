@@ -15,7 +15,6 @@ namespace ElizaBot.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.3");
 
-            modelBuilder.Entity("ElizaBot.Models.Tag", b =>
 
             modelBuilder.Entity("Eliza.Database.Models.Tag", b =>
                 {
