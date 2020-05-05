@@ -15,6 +15,7 @@ using System.Security.Claims;
 using Eliza.Shared;
 using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Http;
+using Eliza.Bot.Services;
 
 namespace Eliza.Server
 {
@@ -49,7 +50,9 @@ namespace Eliza.Server
 
             MigrateDatabase(Configuration.GetConnectionString("ConnectionString"));
 
-            services.AddScoped((provider) => new TagService(provider.GetRequiredService<ApplicationContext>()));
+            services.AddScoped<TagService>();
+            services.AddScoped<RequestableRoleManager>();
+            services.AddScoped<IRoleService,RoleService>();
 
             services.AddAuthentication(options =>
             {
