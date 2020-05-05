@@ -13,9 +13,11 @@ namespace ElizaBot.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.0.1");
+                .HasAnnotation("ProductVersion", "3.1.3");
 
             modelBuilder.Entity("ElizaBot.Models.Tag", b =>
+
+            modelBuilder.Entity("Eliza.Database.Models.Tag", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -33,7 +35,7 @@ namespace ElizaBot.Migrations
                     b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("ElizaBot.Models.User", b =>
+            modelBuilder.Entity("Eliza.Database.Models.User", b =>
                 {
                     b.Property<ulong>("UserId")
                         .ValueGeneratedOnAdd()
@@ -44,7 +46,7 @@ namespace ElizaBot.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ElizaBot.Models.UserBlacklistedTag", b =>
+            modelBuilder.Entity("Eliza.Database.Models.UserBlacklistedTag", b =>
                 {
                     b.Property<ulong>("UserId")
                         .HasColumnType("INTEGER");
@@ -59,7 +61,7 @@ namespace ElizaBot.Migrations
                     b.ToTable("UserBlacklistedTags");
                 });
 
-            modelBuilder.Entity("ElizaBot.Models.UserSubcribedTag", b =>
+            modelBuilder.Entity("Eliza.Database.Models.UserSubcribedTag", b =>
                 {
                     b.Property<ulong>("UserId")
                         .HasColumnType("INTEGER");
@@ -74,30 +76,30 @@ namespace ElizaBot.Migrations
                     b.ToTable("UserSubscribedTags");
                 });
 
-            modelBuilder.Entity("ElizaBot.Models.UserBlacklistedTag", b =>
+            modelBuilder.Entity("Eliza.Database.Models.UserBlacklistedTag", b =>
                 {
-                    b.HasOne("ElizaBot.Models.Tag", "Tag")
+                    b.HasOne("Eliza.Database.Models.Tag", "Tag")
                         .WithMany("Blacklisters")
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ElizaBot.Models.User", "User")
+                    b.HasOne("Eliza.Database.Models.User", "User")
                         .WithMany("BlacklistedTags")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ElizaBot.Models.UserSubcribedTag", b =>
+            modelBuilder.Entity("Eliza.Database.Models.UserSubcribedTag", b =>
                 {
-                    b.HasOne("ElizaBot.Models.Tag", "Tag")
+                    b.HasOne("Eliza.Database.Models.Tag", "Tag")
                         .WithMany("Subscribers")
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ElizaBot.Models.User", "User")
+                    b.HasOne("Eliza.Database.Models.User", "User")
                         .WithMany("SubscribedTags")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
