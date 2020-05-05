@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Eliza.Bot.Modules
 {
+    [RequireBotPermission(GuildPermission.ManageRoles)]
     public class RoleModule : ModuleBase
     {
         private readonly IRoleService _roleService;
