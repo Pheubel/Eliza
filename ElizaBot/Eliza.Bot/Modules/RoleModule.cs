@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using Eliza.Bot.Attributes;
 using Eliza.Bot.Services;
 using System;
 using System.Collections.Generic;
@@ -61,6 +62,25 @@ namespace Eliza.Bot.Modules
                     break;
             }
         }
+
+        [Command("set role requestable")]
+        [IsBotOwner]
+        public async Task SetRoleRequestableAsync(IRole role)
+        {
+            if ((await _roleService.SetRoleRequestable(role)) == IRoleService.Result.Success)
+                await ReplyAsync($"Succesfully set `{role.Name}` as requestable.");
+            else
+                await ReplyAsync($"`{role.Name}` is already set as requestable.");
+        }
+
+        [Command("unset role requestable")]
+        [IsBotOwner]
+        public async Task UnsetRoleRequestableAsync(IRole role)
+        {
+            if ((await _roleService.UnsetRoleRequestable(role)) == IRoleService.Result.Success)
+                await ReplyAsync($"`{role.Name}` is no longer requestable.");
+            else
+                await ReplyAsync($"`{role.Name}` is already not requestable.");
         }
     }
 }
