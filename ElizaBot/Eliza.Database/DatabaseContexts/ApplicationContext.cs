@@ -15,6 +15,7 @@ namespace Eliza.Database.DatabaseContexts
 
         public DbSet<User> Users { get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<RequestableRole> RequestableRoles { get; set; }
 
         public DbSet<UserSubcribedTag> UserSubscribedTags { get; set; }
         public DbSet<UserBlacklistedTag> UserBlacklistedTags { get; set; }
