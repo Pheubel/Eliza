@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Eliza.Database.Models
 {
@@ -9,5 +6,8 @@ namespace Eliza.Database.Models
     {
         [Key]
         public ulong RoleId { get; set; }
+        [MaxLength(32)]
+        public string RoleName { get; set; }
+        public ulong GuildId { get; set; }
     }
 }
