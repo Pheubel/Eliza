@@ -54,6 +54,29 @@ namespace Eliza.Bot.Services
             return IRoleService.Result.Success;
         }
 
+        public async Task<IRoleService.Result> SetRoleRequestable(IRole role)
+        {
+            if (await _requestableRoleManager.AddRoleAsync(role.Id, role.Guild.Id, role.Name))
+                return IRoleService.Result.Success;
+
+            return IRoleService.Result.RoleAlreadyRequestable;
+        }
+
+        public async Task<IRoleService.Result> SetRoleRequestable(ulong guildId, ulong roleId)
+        {
+            var guild = _client.GetGuild(guildId);
+            if (guild == null)
+                return IRoleService.Result.GuildNotFound;
+            var role = guild.GetRole(roleId);
+            if (role == null)
+                return IRoleService.Result.RoleNotFound;
+
+            if (await _requestableRoleManager.AddRoleAsync(roleId, guildId, role.Name))
+                return IRoleService.Result.Success;
+
+            return IRoleService.Result.RoleAlreadyRequestable;
+        }
+
         public async Task<IRoleService.Result> TakeRoleFromUserAsync(IGuildUser user, IRole role)
         {
             if (!await _requestableRoleManager.IsRoleRequestableAsync(role.Id))
@@ -86,6 +109,22 @@ namespace Eliza.Bot.Services
 
             await user.RemoveRoleAsync(role);
             return IRoleService.Result.Success;
+        }
+
+        public async Task<IRoleService.Result> UnsetRoleRequestable(IRole role)
+        {
+            if (await _requestableRoleManager.RemoveRoleAsync(role.Id))
+                return IRoleService.Result.Success;
+
+            return IRoleService.Result.RoleNotRequestable;
+        }
+
+        public async Task<IRoleService.Result> UnsetRoleRequestable(ulong roleId)
+        {
+            if (await _requestableRoleManager.RemoveRoleAsync(roleId))
+                return IRoleService.Result.Success;
+
+            return IRoleService.Result.RoleNotRequestable;
         }
     }
 }

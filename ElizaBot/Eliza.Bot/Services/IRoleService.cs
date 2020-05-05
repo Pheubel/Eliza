@@ -9,6 +9,10 @@ namespace Eliza.Bot.Services
         Task<Result> GiveRoleToUserAsync(ulong guildId, ulong userId, ulong roleId);
         Task<Result> TakeRoleFromUserAsync(IGuildUser user, IRole role);
         Task<Result> TakeRoleFromUserAsync(ulong guildId, ulong userId, ulong roleId);
+        Task<Result> SetRoleRequestable(IRole role);
+        Task<Result> SetRoleRequestable(ulong guildId, ulong roleId);
+        Task<Result> UnsetRoleRequestable(IRole role);
+        Task<Result> UnsetRoleRequestable(ulong roleId);
 
         public enum Result : byte
         {
@@ -18,7 +22,9 @@ namespace Eliza.Bot.Services
             RoleNotFound,
             RoleNotAllowed,
             AlreadyHasRole,
-            DoesNotHaveRole
+            DoesNotHaveRole,
+            RoleAlreadyRequestable,
+            RoleNotRequestable
         }
     }
 }
