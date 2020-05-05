@@ -12,7 +12,6 @@ namespace Eliza.Bot.Services
 
         public enum Result : byte
         {
-            Unknown,
             Success,
             GuildNotFound,
             UserNotFound,
