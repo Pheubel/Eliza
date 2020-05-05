@@ -6,7 +6,7 @@ namespace Eliza.Database.Models
     {
         [Key]
         public ulong RoleId { get; set; }
-        [MaxLength(32)]
+        [MaxLength(32), Required]
         public string RoleName { get; set; }
         public ulong GuildId { get; set; }
     }
