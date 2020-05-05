@@ -24,7 +24,20 @@ namespace Eliza.Bot.Modules
             if (!(Context.User is SocketGuildUser user))
                 return;
 
-            await _roleService.GiveRoleToUserAsync(user,role);
+            var result = await _roleService.GiveRoleToUserAsync(user, role);
+
+            switch (result)
+            {
+                case IRoleService.Result.Success:
+                    await ReplyAsync($"You have been given: `{role.Name}`.");
+                    break;
+                case IRoleService.Result.RoleNotAllowed:
+                    await ReplyAsync("You can not request this role.");
+                    break;
+                default:
+                    await ReplyAsync($"Unhandled result encountered: {result}.");
+                    break;
+            }
         }
 
         [Command("take role")]
@@ -33,7 +46,21 @@ namespace Eliza.Bot.Modules
             if (!(Context.User is SocketGuildUser user))
                 return;
 
-            await _roleService.TakeRoleFromUserAsync(user,role);
+            var result = await _roleService.TakeRoleFromUserAsync(user, role);
+
+            switch (result)
+            {
+                case IRoleService.Result.Success:
+                    await ReplyAsync($"You no longer have: `{role.Name}`.");
+                    break;
+                case IRoleService.Result.RoleNotAllowed:
+                    await ReplyAsync("You can not request removal of this role.");
+                    break;
+                default:
+                    await ReplyAsync($"Unhandled result encountered: {result}.");
+                    break;
+            }
+        }
         }
     }
 }
