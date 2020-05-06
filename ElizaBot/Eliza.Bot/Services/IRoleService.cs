@@ -1,4 +1,6 @@
 ﻿using Discord;
+using Eliza.Shared;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Eliza.Bot.Services
@@ -9,10 +11,12 @@ namespace Eliza.Bot.Services
         Task<Result> GiveRoleToUserAsync(ulong guildId, ulong userId, ulong roleId);
         Task<Result> TakeRoleFromUserAsync(IGuildUser user, IRole role);
         Task<Result> TakeRoleFromUserAsync(ulong guildId, ulong userId, ulong roleId);
-        Task<Result> SetRoleRequestable(IRole role);
-        Task<Result> SetRoleRequestable(ulong guildId, ulong roleId);
-        Task<Result> UnsetRoleRequestable(IRole role);
-        Task<Result> UnsetRoleRequestable(ulong roleId);
+        Task<Result> SetRoleRequestableAsync(IRole role);
+        Task<Result> SetRoleRequestableAsync(ulong guildId, ulong roleId);
+        Task<Result> UnsetRoleRequestableAsync(IRole role);
+        Task<Result> UnsetRoleRequestableAsync(ulong roleId);
+        Task<ulong[]> GetRequestableRoleIdsAsync(ulong guildId);
+        Task<IEnumerable<RoleWithNameDTO>> GetDiscordRolesAsync(ulong guildId);
 
         public enum Result : byte
         {

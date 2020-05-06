@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Discord.WebSocket;
 using Eliza.Database.Services;
+using Eliza.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,20 @@ namespace Eliza.Bot.Services
             _client = client ?? throw new ArgumentNullException(nameof(client));
             _requestableRoleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
         }
+
+        public Task<IEnumerable<RoleWithNameDTO>> GetDiscordRolesAsync(ulong guildId)
+        {
+            var guild = _client.GetGuild(guildId);
+            return Task.FromResult(guild.Roles.Select(r => new RoleWithNameDTO
+            {
+                RoleId = r.Id,
+                RoleName = r.Name,
+                GuildId = guildId
+            }));
+        }
+
+        public Task<ulong[]> GetRequestableRoleIdsAsync(ulong guildId) =>
+            _requestableRoleManager.GetRequestableRoleIdsAsync(guildId);
 
         public async Task<IRoleService.Result> GiveRoleToUserAsync(IGuildUser user, IRole role)
         {
@@ -54,7 +69,7 @@ namespace Eliza.Bot.Services
             return IRoleService.Result.Success;
         }
 
-        public async Task<IRoleService.Result> SetRoleRequestable(IRole role)
+        public async Task<IRoleService.Result> SetRoleRequestableAsync(IRole role)
         {
             if (await _requestableRoleManager.AddRoleAsync(role.Id, role.Guild.Id, role.Name))
                 return IRoleService.Result.Success;
@@ -62,7 +77,7 @@ namespace Eliza.Bot.Services
             return IRoleService.Result.RoleAlreadyRequestable;
         }
 
-        public async Task<IRoleService.Result> SetRoleRequestable(ulong guildId, ulong roleId)
+        public async Task<IRoleService.Result> SetRoleRequestableAsync(ulong guildId, ulong roleId)
         {
             var guild = _client.GetGuild(guildId);
             if (guild == null)
@@ -111,7 +126,7 @@ namespace Eliza.Bot.Services
             return IRoleService.Result.Success;
         }
 
-        public async Task<IRoleService.Result> UnsetRoleRequestable(IRole role)
+        public async Task<IRoleService.Result> UnsetRoleRequestableAsync(IRole role)
         {
             if (await _requestableRoleManager.RemoveRoleAsync(role.Id))
                 return IRoleService.Result.Success;
@@ -119,7 +134,7 @@ namespace Eliza.Bot.Services
             return IRoleService.Result.RoleNotRequestable;
         }
 
-        public async Task<IRoleService.Result> UnsetRoleRequestable(ulong roleId)
+        public async Task<IRoleService.Result> UnsetRoleRequestableAsync(ulong roleId)
         {
             if (await _requestableRoleManager.RemoveRoleAsync(roleId))
                 return IRoleService.Result.Success;
