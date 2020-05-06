@@ -79,7 +79,7 @@ namespace Eliza.Database.Services
                 .AsNoTracking()
                 .AnyAsync(r => r.RoleId == roleId);
 
-        public Task<ulong[]> GetRequestableRolesAsync(ulong guildId) =>
+        public Task<ulong[]> GetRequestableRoleIdsAsync(ulong guildId) =>
             _context.RequestableRoles
                 .AsNoTracking()
                 .Select(r => r.GuildId)
