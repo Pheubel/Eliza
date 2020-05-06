@@ -68,7 +68,7 @@ namespace Eliza.Bot.Modules
         [IsBotOwner]
         public async Task SetRoleRequestableAsync(IRole role)
         {
-            if ((await _roleService.SetRoleRequestable(role)) == IRoleService.Result.Success)
+            if ((await _roleService.SetRoleRequestableAsync(role)) == IRoleService.Result.Success)
                 await ReplyAsync($"Succesfully set `{role.Name}` as requestable.");
             else
                 await ReplyAsync($"`{role.Name}` is already set as requestable.");
@@ -78,7 +78,7 @@ namespace Eliza.Bot.Modules
         [IsBotOwner]
         public async Task UnsetRoleRequestableAsync(IRole role)
         {
-            if ((await _roleService.UnsetRoleRequestable(role)) == IRoleService.Result.Success)
+            if ((await _roleService.UnsetRoleRequestableAsync(role)) == IRoleService.Result.Success)
                 await ReplyAsync($"`{role.Name}` is no longer requestable.");
             else
                 await ReplyAsync($"`{role.Name}` is already not requestable.");
