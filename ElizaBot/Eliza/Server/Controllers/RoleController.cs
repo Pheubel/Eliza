@@ -22,8 +22,12 @@ namespace Eliza.Server.Controllers
         }
 
         [HttpGet]
-        public Task<IEnumerable<RoleWithNameDTO>> GetDiscordRolesAsync(ulong guildId) =>
+        public Task<IEnumerable<RoleDTO>> GetDiscordRolesAsync(ulong guildId) =>
             _roleService.GetDiscordRolesAsync(guildId);
+
+        [HttpGet]
+        public Task<IEnumerable<RoleDTO>> GetUserDiscordRolesAsync(ulong guildId, ulong userId) =>
+            _roleService.GetUserDiscordRolesAsync(guildId,userId);
 
         [HttpGet]
         public Task<ulong[]> GetRequestableRolesAsync(ulong guildId) =>
