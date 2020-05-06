@@ -21,10 +21,12 @@ namespace Eliza.Bot.Services
             _requestableRoleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
         }
 
-        public Task<IEnumerable<RoleWithNameDTO>> GetDiscordRolesAsync(ulong guildId)
+        public Task<IEnumerable<RoleDTO>> GetDiscordRolesAsync(ulong guildId)
         {
             var guild = _client.GetGuild(guildId);
-            return Task.FromResult(guild.Roles.Select(r => new RoleWithNameDTO
+            if (guild == null)
+                return Task.FromResult(Enumerable.Empty<RoleDTO>());
+            return Task.FromResult(guild.Roles.Select(r => new RoleDTO
             {
                 RoleId = r.Id,
                 RoleName = r.Name,
@@ -34,6 +36,22 @@ namespace Eliza.Bot.Services
 
         public Task<ulong[]> GetRequestableRoleIdsAsync(ulong guildId) =>
             _requestableRoleManager.GetRequestableRoleIdsAsync(guildId);
+
+        public Task<IEnumerable<RoleDTO>> GetUserDiscordRolesAsync(ulong guildId, ulong userId)
+        {
+            var guild = _client.GetGuild(guildId);
+            if (guild == null)
+                return Task.FromResult(Enumerable.Empty<RoleDTO>());
+            var user = guild.GetUser(userId);
+            if (user == null)
+                return Task.FromResult(Enumerable.Empty<RoleDTO>());
+            return Task.FromResult(user.Roles.Select(r => new RoleDTO
+            {
+                RoleId = r.Id,
+                RoleName = r.Name,
+                GuildId = guildId
+            }));
+        }
 
         public async Task<IRoleService.Result> GiveRoleToUserAsync(IGuildUser user, IRole role)
         {
