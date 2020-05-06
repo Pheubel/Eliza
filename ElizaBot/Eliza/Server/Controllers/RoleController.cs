@@ -21,19 +21,19 @@ namespace Eliza.Server.Controllers
             _roleService = roleService ?? throw new ArgumentNullException(nameof(roleService));
         }
 
-        [HttpGet]
+        [HttpGet("guild")]
         public Task<IEnumerable<RoleDTO>> GetDiscordRolesAsync(ulong guildId) =>
             _roleService.GetDiscordRolesAsync(guildId);
 
-        [HttpGet]
+        [HttpGet("user")]
         public Task<IEnumerable<RoleDTO>> GetUserDiscordRolesAsync(ulong guildId, ulong userId) =>
             _roleService.GetUserDiscordRolesAsync(guildId,userId);
 
-        [HttpGet]
+        [HttpGet("requestable")]
         public Task<ulong[]> GetRequestableRolesAsync(ulong guildId) =>
             _roleService.GetRequestableRoleIdsAsync(guildId);
 
-        [HttpGet]
+        [HttpGet("give")]
         public async Task<IActionResult> GiveRoleAsync(ulong guildId, ulong roleId)
         {
             if (!ulong.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var userId))
@@ -54,7 +54,7 @@ namespace Eliza.Server.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("take")]
         public async Task<IActionResult> TakeRoleAsync(ulong guildId, ulong roleId)
         {
             if (!ulong.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var userId))
@@ -75,7 +75,7 @@ namespace Eliza.Server.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("setrequestable")]
         [Authorize(Eliza.Shared.Constants.IsBotOwner)]
         public async Task<IActionResult> SetRoleRequestableAsync(ulong guildId, ulong roleId)
         {
@@ -93,7 +93,7 @@ namespace Eliza.Server.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpDelete("unsetrequestable")]
         [Authorize(Eliza.Shared.Constants.IsBotOwner)]
         public async Task<IActionResult> UnsetRoleRequestableAsync(ulong roleId)
         {
