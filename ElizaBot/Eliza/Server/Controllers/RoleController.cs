@@ -33,7 +33,7 @@ namespace Eliza.Server.Controllers
         public Task<ulong[]> GetRequestableRolesAsync(ulong guildId) =>
             _roleService.GetRequestableRoleIdsAsync(guildId);
 
-        [HttpGet("give")]
+        [HttpPost("give")]
         public async Task<IActionResult> GiveRoleAsync(ulong guildId, ulong roleId)
         {
             if (!ulong.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var userId))
@@ -54,7 +54,7 @@ namespace Eliza.Server.Controllers
             }
         }
 
-        [HttpGet("take")]
+        [HttpPost("take")]
         public async Task<IActionResult> TakeRoleAsync(ulong guildId, ulong roleId)
         {
             if (!ulong.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var userId))
