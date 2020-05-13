@@ -30,7 +30,8 @@ namespace Eliza.Bot.Services
             {
                 RoleId = r.Id,
                 RoleName = r.Name,
-                GuildId = guildId
+                GuildId = guildId,
+                RoleColour = r.Color.ToString()
             }));
         }
 
@@ -49,7 +50,8 @@ namespace Eliza.Bot.Services
             {
                 RoleId = r.Id,
                 RoleName = r.Name,
-                GuildId = guildId
+                GuildId = guildId,
+                RoleColour = r.Color.ToString()
             }));
         }
 
