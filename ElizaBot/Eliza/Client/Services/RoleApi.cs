@@ -1,5 +1,6 @@
 ﻿using Eliza.Client.Services.Core;
 using Eliza.Shared;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -11,6 +12,11 @@ namespace Eliza.Client.Services
     public class RoleApi : IRoleApi
     {
         private readonly HttpClient _client;
+
+        public RoleApi(HttpClient client)
+        {
+            _client = client ?? throw new ArgumentNullException(nameof(client));
+        }
 
         public Task<IEnumerable<RoleDTO>> GetDiscordRolesAsync(ulong guildId) =>
             _client.GetFromJsonAsync<IEnumerable<RoleDTO>>("");
