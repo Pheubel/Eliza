@@ -27,6 +27,7 @@ namespace Eliza.Client
             builder.Services.AddScoped<DiscordAuthenticationStateProvider>();
             builder.Services.AddScoped<AuthenticationStateProvider, DiscordAuthenticationStateProvider>((provider) => provider.GetRequiredService<DiscordAuthenticationStateProvider>());
             builder.Services.AddScoped<IAuthorizeApi, AuthorizeApi>();
+            builder.Services.AddScoped<IRoleApi, RoleApi>();
             builder.Services.AddScoped<ITagApi, TagApi>();
 
             builder.Services.AddAuthorizationCore(config =>
