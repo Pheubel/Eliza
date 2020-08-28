@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Eliza.Bot.Services;
+﻿using Eliza.Bot.Services;
 using Eliza.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Eliza.Server.Controllers
 {
@@ -27,7 +27,7 @@ namespace Eliza.Server.Controllers
 
         [HttpGet("user")]
         public Task<IEnumerable<RoleDTO>> GetUserDiscordRolesAsync(ulong guildId, ulong userId) =>
-            _roleService.GetUserDiscordRolesAsync(guildId,userId);
+            _roleService.GetUserDiscordRolesAsync(guildId, userId);
 
         [HttpGet("requestable")]
         public Task<ulong[]> GetRequestableRolesAsync(ulong guildId) =>
