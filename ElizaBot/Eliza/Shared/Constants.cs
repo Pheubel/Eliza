@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Eliza.Shared
+﻿namespace Eliza.Shared
 {
     public static class Constants
     {

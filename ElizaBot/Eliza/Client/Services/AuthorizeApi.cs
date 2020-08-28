@@ -22,7 +22,7 @@ namespace Eliza.Client.Services
         public async Task Login()
         {
             var result = await _httpClient.GetAsync("api/authentication/login");
-            if (result.StatusCode == System.Net.HttpStatusCode.BadRequest) 
+            if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
                 throw new Exception(await result.Content.ReadAsStringAsync());
             result.EnsureSuccessStatusCode();
         }

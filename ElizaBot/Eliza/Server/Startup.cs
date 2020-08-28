@@ -1,21 +1,21 @@
+using AspNetCoreRateLimit;
+using Discord;
+using Discord.WebSocket;
+using Eliza.Bot;
+using Eliza.Bot.Services;
+using Eliza.Database.DatabaseContexts;
+using Eliza.Database.Services;
+using Eliza.Shared;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Eliza.Database.DatabaseContexts;
-using Microsoft.EntityFrameworkCore;
-using Discord;
-using Eliza.Bot;
-using Discord.WebSocket;
-using Eliza.Database.Services;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using System.Threading.Tasks;
 using System.Security.Claims;
-using Eliza.Shared;
-using AspNetCoreRateLimit;
-using Microsoft.AspNetCore.Http;
-using Eliza.Bot.Services;
+using System.Threading.Tasks;
 
 namespace Eliza.Server
 {
@@ -52,7 +52,7 @@ namespace Eliza.Server
 
             services.AddScoped<TagService>();
             services.AddScoped<RequestableRoleManager>();
-            services.AddScoped<IRoleService,RoleService>();
+            services.AddScoped<IRoleService, RoleService>();
 
             services.AddAuthentication(options =>
             {
@@ -72,11 +72,11 @@ namespace Eliza.Server
                     {
                         OnCreatingTicket = ticketContext =>
                         {
-                            if(ulong.TryParse(ticketContext.Principal.FindFirstValue(ClaimTypes.NameIdentifier),out var userId))
+                            if (ulong.TryParse(ticketContext.Principal.FindFirstValue(ClaimTypes.NameIdentifier), out var userId))
                             {
-                                if(userId == botSettings.OwnerId)
+                                if (userId == botSettings.OwnerId)
                                 {
-                                    ticketContext.Principal.AddIdentity(new ClaimsIdentity(new[] { new Claim(Constants.IsBotOwner, "true")}));
+                                    ticketContext.Principal.AddIdentity(new ClaimsIdentity(new[] { new Claim(Constants.IsBotOwner, "true") }));
                                 }
                             }
 

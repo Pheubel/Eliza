@@ -39,7 +39,7 @@ namespace Eliza.Client
                         new Claim(ClaimTypes.NameIdentifier,_userInfoCache.UserId.ToString()),
                         new Claim(ClaimTypes.Name,_userInfoCache.Username)
                     };
-                    claims.AddRange(userInfo.Claims.Select(c => new Claim(c.Key,c.Value)));
+                    claims.AddRange(userInfo.Claims.Select(c => new Claim(c.Key, c.Value)));
                     identity = new ClaimsIdentity(claims, "Server authentication");
                 }
             }

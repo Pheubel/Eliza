@@ -4,8 +4,6 @@ using Discord.WebSocket;
 using Eliza.Bot.Attributes;
 using Eliza.Bot.Services;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Eliza.Bot.Modules

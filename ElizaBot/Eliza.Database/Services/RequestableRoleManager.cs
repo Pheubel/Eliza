@@ -74,7 +74,7 @@ namespace Eliza.Database.Services
             await _context.SaveChangesAsync();
         }
 
-        public Task<bool> IsRoleRequestableAsync(ulong roleId) => 
+        public Task<bool> IsRoleRequestableAsync(ulong roleId) =>
             _context.RequestableRoles
                 .AsNoTracking()
                 .AnyAsync(r => r.RoleId == roleId);

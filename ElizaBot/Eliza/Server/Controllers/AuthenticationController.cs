@@ -1,11 +1,11 @@
-﻿using System.Security.Claims;
-using System.Threading.Tasks;
-using AspNet.Security.OAuth.Discord;
+﻿using AspNet.Security.OAuth.Discord;
 using Eliza.Shared;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Eliza.Server.Controllers
 {
@@ -57,7 +57,7 @@ namespace Eliza.Server.Controllers
                         break;
 
                     case Constants.IsBotOwner:
-                        userInfo.Claims.Add(claim.Type,claim.Value);
+                        userInfo.Claims.Add(claim.Type, claim.Value);
                         break;
                 }
             }

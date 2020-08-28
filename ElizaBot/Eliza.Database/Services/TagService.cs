@@ -41,7 +41,7 @@ namespace Eliza.Database.Services
                 .ToArrayAsync();
         }
 
-        public async Task<ulong[]> GetUserToTagById(ulong idInvoker, [DisallowNull]string[] tags)
+        public async Task<ulong[]> GetUserToTagById(ulong idInvoker, [DisallowNull] string[] tags)
         {
             var sanitizedTags = ArrayToLower(tags);
 
@@ -116,7 +116,7 @@ namespace Eliza.Database.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task RemoveSubscribedTagsFromUser(ulong invokerId, [DisallowNull]string[] tags)
+        public async Task RemoveSubscribedTagsFromUser(ulong invokerId, [DisallowNull] string[] tags)
         {
             // sanitize the tags by converting them to lower
             var sanitizedTags = ArrayToLower(tags);
@@ -135,7 +135,7 @@ namespace Eliza.Database.Services
                 await _context.SaveChangesAsync();
         }
 
-        public async Task AddBlacklistToUser(ulong invokerId, [DisallowNull]string[] tags)
+        public async Task AddBlacklistToUser(ulong invokerId, [DisallowNull] string[] tags)
         {
             // sanitize the tags by converting them to lower
             var sanitizedTags = ArrayToLower(tags);
@@ -198,7 +198,7 @@ namespace Eliza.Database.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task RemoveBlacklistFromUser(ulong invokerId, [DisallowNull]string[] tags)
+        public async Task RemoveBlacklistFromUser(ulong invokerId, [DisallowNull] string[] tags)
         {
             // sanitize the tags by converting them to lower
             var sanitizedTags = ArrayToLower(tags);

@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Eliza.Database.Services;
+using Eliza.Shared;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Eliza.Database.Services;
-using Eliza.Shared;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Eliza.Server.Controllers
 {
@@ -34,7 +34,8 @@ namespace Eliza.Server.Controllers
         {
             var claims = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
 
-            if (!ulong.TryParse(claims?.Value, out ulong userId)){
+            if (!ulong.TryParse(claims?.Value, out ulong userId))
+            {
                 return Ok(new UserTagListDTO
                 {
                     SubscribedTags = Array.Empty<string>(),
