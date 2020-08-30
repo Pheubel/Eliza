@@ -8,21 +8,21 @@
 <h3>Settings</h3>
 
 <div style="max-width:400px">
-    @if (_settings != null)
+    @if (_botSettings != null)
     {
-        <EditForm Model="_settings" OnValidSubmit="@FormSubmitted">
+        <EditForm Model="_botSettings" OnValidSubmit="@FormSubmitted">
             <fieldset>
                 <div class="form-group">
                     <label for="Prefix">Bot Prefix</label>
-                    <InputText @bind-Value="_settings.Prefix" class="form-control" id="Prefix" />
+                    <InputText @bind-Value="_botSettings.Prefix" class="form-control" id="Prefix" />
                 </div>
                 <div class="form-group">
                     <label for="csCommands">Enable Case Sensitive Commands</label>
-                    <InputCheckbox @bind-Value="_settings.CaseSensitiveComands" class="form-control move-left" id="csCommands" />
+                    <InputCheckbox @bind-Value="_botSettings.CaseSensitiveComands" class="form-control move-left" id="csCommands" />
                 </div>
                 <div class="form-group">
                     <label for="mentionPrefix">Enable Mention Prefix</label>
-                    <InputCheckbox @bind-Value="_settings.UseMentionPrefix" class="form-control move-left" id="mentionPrefix" />
+                    <InputCheckbox @bind-Value="_botSettings.UseMentionPrefix" class="form-control move-left" id="mentionPrefix" />
                 </div>
                 <input type="submit" value="Submit" class="btn btn-primary" />
             </fieldset>
@@ -52,13 +52,13 @@
 </div>
 
 @code {
-    SettingsDTO _settings;
+    SettingsDTO _botSettings;
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            _settings = await Http.GetFromJsonAsync<SettingsDTO>("api/settings");
+            _botSettings = await Http.GetFromJsonAsync<SettingsDTO>("api/settings");
         }
         catch
         {
@@ -70,7 +70,7 @@
     {
         try
         {
-            await Http.PostAsJsonAsync("api/settings", _settings);
+            await Http.PostAsJsonAsync("api/settings", _botSettings);
         }
         catch (Exception)
         {
