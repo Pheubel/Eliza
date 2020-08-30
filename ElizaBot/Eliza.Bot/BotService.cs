@@ -57,7 +57,7 @@ namespace Eliza.Bot
 
                 await Task.Delay(-1, stoppingToken);
             }
-            catch (Exception ex)
+            catch (Exception ex) when (!(ex is TaskCanceledException))
             {
                 try
                 {
@@ -65,16 +65,13 @@ namespace Eliza.Bot
                 }
                 finally
                 {
+                    _client?.Dispose();
                     scope?.Dispose();
                 }
 
                 _logger.LogError(ex, "An exception was triggered during set-up.");
 
                 throw;
-            }
-            finally
-            {
-                Environment.Exit(1);
             }
         }
 
@@ -92,6 +89,12 @@ namespace Eliza.Bot
                 _logger.LogError($"Could not connect to Discord. Exception: {e.Message}");
                 throw;
             }
+        }
+        public override void Dispose()
+        {
+            _client.Dispose();
+            _scope?.Dispose();
+            base.Dispose();
         }
     }
 }
