@@ -34,12 +34,14 @@ namespace Eliza.Bot
 
         private void BindEvents()
         {
+            _client.Ready += HandleReady;
             _client.Log += LogAsync;
             _client.MessageReceived += HandleCommandAsync;
         }
 
         internal void UnbindEvents()
         {
+            _client.Ready -= HandleReady;
             _client.Log -= LogAsync;
             _client.MessageReceived -= HandleCommandAsync;
         }
@@ -48,6 +50,11 @@ namespace Eliza.Bot
         {
             _logger.LogInformation(log.Message);
             return Task.CompletedTask;
+        }
+
+        private async Task HandleReady()
+        {
+            await _client.SetActivityAsync(new Game("Visit gaikiken.com!"));
         }
 
         private async Task HandleCommandAsync(SocketMessage message)
