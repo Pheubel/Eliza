@@ -15,10 +15,11 @@ namespace Eliza.Client
         private UserInfoDTO _userInfoCache;
         private readonly IAuthorizeApi _authorizeApi;
 
-        public string Username => _userInfoCache.Username;
-        public string AvatarHash => _userInfoCache.AvatarHash;
-        public ulong UserId => _userInfoCache.UserId;
-        public IReadOnlyDictionary<string, string> Claims => _userInfoCache.Claims;
+        public bool HasValidInfoCache => _userInfoCache != null && _userInfoCache.IsAuthenticated;
+        public string Username => _userInfoCache?.Username;
+        public string AvatarHash => _userInfoCache?.AvatarHash;
+        public ulong UserId => _userInfoCache?.UserId ?? default;
+        public IReadOnlyDictionary<string, string> Claims => _userInfoCache?.Claims;
 
         public DiscordAuthenticationStateProvider(IAuthorizeApi authorizeApi)
         {

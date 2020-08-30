@@ -12,8 +12,11 @@
             <!--profile info here-->
         </div>
         <div class="col-sm-auto">
-            <span class="display-3 align-middle">@AuthState.Username </span>
-            <img src=@string.Format("https://cdn.discordapp.com/avatars/{0}/{1}.webp",AuthState.UserId,AuthState.AvatarHash) class="rounded-circle img-thumbnail img-fluid" />
+            @if (AuthState.HasValidInfoCache)
+            {
+                <span class="display-3 align-middle">@AuthState.Username </span>
+                <img src=@string.Format("https://cdn.discordapp.com/avatars/{0}/{1}.webp",AuthState.UserId,AuthState.AvatarHash) class="rounded-circle img-thumbnail img-fluid" />
+            }
         </div>
     </div>
     <div class="row mt-3">
