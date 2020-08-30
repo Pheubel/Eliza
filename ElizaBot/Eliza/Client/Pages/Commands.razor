@@ -1,6 +1,90 @@
-﻿@page "/commands" 
+﻿@page "/commands"
 
-<h3>Commands</h3>
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <h1>Commands</h1>
+    </div>
+    <div class="row m-3">
+        <div class="col">
+            <div class="rounded border">
+
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <h2>Tags</h2>
+    </div>
+    <div class="col justify-content-center">
+        <div class="container">
+            <div class="row mt-3">
+                <div class="row w-100">
+                    <h4>list tags</h4>
+                </div>
+                <div class="row w-100">
+                    <strong>Summary:</strong> Sends the invoker a complete list of their tag subscriptions and blacklist.
+                </div>
+                <div class="row w-100">
+                    <strong class="p-1">Example usage:</strong> <code class="ml-1 mr-1 p-1 rounded border">>>list tags</code>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="row w-100">
+                    <h4>tag</h4>
+                </div>
+                <div class="row w-100">
+                    <strong>Summary:</strong> Tags users who have been subscribed to the image tags provided in the command, excluding users with one of the tags in their blacklist and the invoker.
+                </div>
+                <div class="row w-100">
+                    <strong class="p-1">Example usage:</strong> <code class="ml-1 mr-1 p-1 rounded border">>>tag swimsuit</code> <code class="ml-1 mr-1 p-1 rounded border">>>tag nintendo samus_aran</code>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="row w-100">
+                    <h4>subscribe</h4>
+                </div>
+                <div class="row w-100">
+                    <strong>Summary:</strong> Subscribes the invoker to the image tag(s) to notify the invoker when an image with the tag(s) gets posted.
+                </div>
+                <div class="row w-100">
+                    <strong class="p-1">Example usage:</strong> <code class="ml-1 mr-1 p-1 rounded border">>>subscribe large_breasts</code>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="row w-100">
+                    <h4>unsubscribe</h4>
+                </div>
+                <div class="row w-100">
+                    <strong>Summary:</strong> Unsubscribes the invoker from the tag(s) to not get notified by images with the tag(s).
+                </div>
+                <div class="row w-100">
+                    <strong class="p-1">Example usage:</strong> <code class="ml-1 mr-1 p-1 rounded border">>>unsubscribe nintendo samus_aran</code>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="row w-100">
+                    <h4>blacklist</h4>
+                </div>
+                <div class="row w-100">
+                    <strong>Summary:</strong> Adds the tag(s) to the invoker's blacklist.
+                </div>
+                <div class="row w-100">
+                    <strong class="p-1">Example usage:</strong> <code class="ml-1 mr-1 p-1 rounded border">>>blacklist scat ugly_bastard</code>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="row w-100">
+                    <h4>unblacklist</h4>
+                </div>
+                <div class="row w-100">
+                    <strong>Summary:</strong> Removes the tag(s) from the invoker's blacklist.
+                </div>
+                <div class="row w-100">
+                    <strong class="p-1">Example usage:</strong> <code class="ml-1 mr-1 p-1 rounded border">>>unblacklist glasses</code>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
 
