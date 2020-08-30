@@ -147,10 +147,21 @@ namespace Eliza.Bot.Modules
             for (int i = 0; i < usersToTag.Length; i++)
             {
                 var user = await Context.Guild.GetUserAsync(usersToTag[i]);
-                builder.Append(user?.Mention ?? string.Empty);
+
+                if (user == null)
+                    continue;
+
+                builder.Append(user.Mention);
+
+                if(builder.Length > 1800)
+                {
+                    await ReplyAsync(builder.ToString());
+                    builder.Clear();
+                }
             }
 
-            await ReplyAsync(builder.ToString());
+            if(builder.Length != 0)
+                await ReplyAsync(builder.ToString());
         }
 
         /// <summary> Subscribes the invoker to the image tag(s) to notify the invoker when an image with the tag(s) gets posted.</summary>
@@ -207,7 +218,7 @@ namespace Eliza.Bot.Modules
             await ReplyAsync("Succesfully blacklisted the tags.");
         }
 
-        /// <summary>Removes the tag(s) from the invoker's blacklist.</summary>
+        /// <summary> Removes the tag(s) from the invoker's blacklist.</summary>
         /// <param name="tags"> The image tags the invoker wants to remove from their blacklist.</param>
         /// <example>
         ///     >>unblacklist glasses
