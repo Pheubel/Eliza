@@ -8,7 +8,7 @@ This project was made with blazor preview 5 to provide front-end functionality w
 
 ## Contributing
 Anyone is free to contribute to this project. It is assumed that you follow C# naming conventions when writing code.
-When setting up your own enviroment, it is adviced to run `git update-index --skip-worktree ElizaBot/Eliza/Server/appsettings.Development.json` in your git terminal to avoid accidentally committing sensitive data used for development.
+When setting up your own enviroment, it is adviced to run `git update-index --skip-worktree source/Eliza/Server/appsettings.Development.json` in your git terminal to avoid accidentally committing sensitive data used for development.
 
 ### Setting up
 To get started you first need to make an application and bot user on [the discord developer portal](https://discordapp.com/developers/applications). you will then need to copy and paste the following values into `ElizaBot/Eliza/Server/appsettings.Development.json`:
