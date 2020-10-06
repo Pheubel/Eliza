@@ -99,6 +99,8 @@ namespace Eliza.Bot
         {
             _client.Dispose();
             _scope?.Dispose();
+            ((IDisposable)_commands).Dispose();
+
             base.Dispose();
         }
     }
