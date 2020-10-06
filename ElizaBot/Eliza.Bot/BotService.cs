@@ -54,8 +54,6 @@ namespace Eliza.Bot
                 await _commands.AddModulesAsync(typeof(BotService).Assembly, _scope.ServiceProvider);
 
                 await StartClientAsync(stoppingToken);
-
-                await Task.Delay(-1, stoppingToken);
             }
             catch (Exception ex) when (!(ex is TaskCanceledException))
             {
@@ -73,6 +71,13 @@ namespace Eliza.Bot
 
                 throw;
             }
+        }
+
+        public override Task StopAsync(CancellationToken cancellationToken)
+        {
+            _client.StopAsync();
+
+            return base.StopAsync(cancellationToken);
         }
 
         private async Task StartClientAsync(CancellationToken cancellationToken)
