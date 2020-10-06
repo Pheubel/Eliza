@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Eliza.Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/elizabot/[controller]")]
     [ApiController]
     [Authorize]
     public class RoleController : ControllerBase

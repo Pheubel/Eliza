@@ -17,22 +17,22 @@ namespace Eliza.Client.Services
         }
 
         public async Task<TagMetaDataDTO[]> GetTagMetaDataAsync() =>
-            await _client.GetFromJsonAsync<TagMetaDataDTO[]>("api/tags");
+            await _client.GetFromJsonAsync<TagMetaDataDTO[]>("api/elizabot/tags");
 
         public async Task<UserTagListDTO> GetUserTaglistAsync() =>
-            await _client.GetFromJsonAsync<UserTagListDTO>("api/tags/userlist");
+            await _client.GetFromJsonAsync<UserTagListDTO>("api/elizabot/tags/userlist");
 
         public async Task SubscribeAsync(string[] tags) =>
-            await _client.PostAsJsonAsync("api/tags/subscribe", tags);
+            await _client.PostAsJsonAsync("api/elizabot/tags/subscribe", tags);
 
         public async Task UnsubscribeAsync(string[] tags) =>
-            await _client.PostAsJsonAsync("api/tags/unsubscribe", tags);
+            await _client.PostAsJsonAsync("api/elizabot/tags/unsubscribe", tags);
 
         public async Task BlacklistAsync(string[] tags) =>
-            await _client.PostAsJsonAsync("api/tags/blacklist", tags);
+            await _client.PostAsJsonAsync("api/elizabot/tags/blacklist", tags);
 
         public async Task UnblacklistAsync(string[] tags) =>
-            await _client.PostAsJsonAsync("api/tags/unblacklist", tags);
+            await _client.PostAsJsonAsync("api/elizabot/tags/unblacklist", tags);
 
     }
 }

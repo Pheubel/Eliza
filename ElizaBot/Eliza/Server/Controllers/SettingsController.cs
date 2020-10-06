@@ -9,7 +9,7 @@ using System.Text.Json;
 
 namespace Eliza.Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/elizabot/[controller]")]
     [ApiController]
     [Authorize(Policy = Eliza.Shared.Constants.IsBotOwner)]
     public class SettingsController : ControllerBase

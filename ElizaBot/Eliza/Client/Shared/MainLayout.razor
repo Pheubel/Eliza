@@ -1,7 +1,18 @@
 ﻿@inherits LayoutComponentBase
 
+@inject NavigationManager NavigationManager
+
 <div class="sidebar">
-    <NavMenu />
+    @switch (PickNavigationMenu())
+    {
+        case 1:
+            <ElizaBotNavMenu />
+            break;
+
+        default:
+            <DefaultNavMenu />
+            break;
+    }
 </div>
 
 <div class="main">
@@ -9,3 +20,28 @@
         @Body
     </div>
 </div>
+
+@{
+    int PickNavigationMenu()
+    {
+        string path = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+
+        if (string.IsNullOrWhiteSpace(path))
+            return 0;
+
+        string route;
+
+        int index = path.IndexOf('/');
+        if (index == -1)
+            route = path;
+        else
+            route = path.Substring(0, index);
+
+        if (route == "elizabot")
+            return 1;
+
+        Console.WriteLine(route);
+
+        return 0;
+    }
+}

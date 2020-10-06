@@ -17,11 +17,11 @@ namespace Eliza.Client.Services
         }
 
         public async Task<UserInfoDTO> GetUserInfo() =>
-            await _httpClient.GetFromJsonAsync<UserInfoDTO>("api/authentication/userinfo");
+            await _httpClient.GetFromJsonAsync<UserInfoDTO>("api/elizabot/authentication/userinfo");
 
         public async Task Login()
         {
-            var result = await _httpClient.GetAsync("api/authentication/login");
+            var result = await _httpClient.GetAsync("api/elizabot/authentication/login");
             if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
                 throw new Exception(await result.Content.ReadAsStringAsync());
             result.EnsureSuccessStatusCode();
@@ -29,7 +29,7 @@ namespace Eliza.Client.Services
 
         public async Task Logout()
         {
-            var result = await _httpClient.PostAsync("api/Authorize/Logout", null);
+            var result = await _httpClient.PostAsync("api/elizabot/Authorize/Logout", null);
             result.EnsureSuccessStatusCode();
         }
     }
