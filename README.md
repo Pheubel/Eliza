@@ -15,6 +15,7 @@ To get started you first need to make an application and bot user on [the discor
 - Client Id
 - Client Secret
 - Bot Token
+
 As a final step, you need to allow a redirect to the application page in the OAuth2 tab, since the application is hosted on your machine during development it will look something like this: `https://localhost:44353/signin-discord`. Keep in mind that the port number can differ. You can find out on which port the application is listening to in the URL bar when hosting it ia Visual Studio.
 
 Optionally you can set yourself as bot owner by setting `OwnerId` to your discord user ID. This allows you to access parts of the application which should only be exposed by the owner of the bot.
