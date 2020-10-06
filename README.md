@@ -1,3 +1,6 @@
+# Eliza
+A web server for serving pages using ASP.NET Core with a Blazor front end. The name for the server stems from remnants of the original discord bot project.
+
 # ElizaBot
 A small Discord bot backed by an ASP.Net Core web server providing a web interface for some simple interactions, such as reading commands and checking tags.
 
