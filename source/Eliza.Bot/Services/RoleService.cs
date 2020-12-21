@@ -29,13 +29,36 @@ namespace Eliza.Bot.Services
             {
                 RoleId = r.Id,
                 RoleName = r.Name,
-                GuildId = guildId,
                 RoleColour = r.Color.ToString()
             }));
         }
 
         public Task<ulong[]> GetRequestableRoleIdsAsync(ulong guildId) =>
             _requestableRoleManager.GetRequestableRoleIdsAsync(guildId);
+
+        public async Task<IEnumerable<RoleDTO>> GetRequestableRolesAsync(ulong guildId)
+        {
+            var requestableIds = await _requestableRoleManager.GetRequestableRoleIdsAsync(guildId);
+            var guild = _client.GetGuild(guildId);
+
+            List<RoleDTO> roles = new List<RoleDTO>();
+
+            for (int i = 0; i < requestableIds.Length; i++)
+            {
+                var role = guild.GetRole(requestableIds[i]);
+
+                if (role == null)
+                    continue;
+
+                roles.Add(new RoleDTO { 
+                    RoleId = role.Id,
+                    RoleColour = role.Color.ToString(),
+                    RoleName = role.Name
+                });
+            }
+
+            return roles;
+        }
 
         public Task<IEnumerable<RoleDTO>> GetUserDiscordRolesAsync(ulong guildId, ulong userId)
         {
@@ -49,7 +72,6 @@ namespace Eliza.Bot.Services
             {
                 RoleId = r.Id,
                 RoleName = r.Name,
-                GuildId = guildId,
                 RoleColour = r.Color.ToString()
             }));
         }

@@ -13,5 +13,6 @@ namespace Eliza.Client.Services.Core
         Task TakeRoleAsync(ulong guildId, ulong roleId);
         Task SetRequestableAsync(ulong guildId, ulong roleId);
         Task UnsetRequestableAsync(ulong guildId, ulong roleId);
+        Task<IEnumerable<GuildWithRolesDTO>> GetUserGuildsWithRequestableRoles(ulong userID);
     }
 }

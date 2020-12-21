@@ -16,6 +16,7 @@ namespace Eliza.Bot.Services
         Task<Result> UnsetRoleRequestableAsync(IRole role);
         Task<Result> UnsetRoleRequestableAsync(ulong roleId);
         Task<ulong[]> GetRequestableRoleIdsAsync(ulong guildId);
+        Task<IEnumerable<RoleDTO>> GetRequestableRolesAsync(ulong guildId);
         Task<IEnumerable<RoleDTO>> GetDiscordRolesAsync(ulong guildId);
         Task<IEnumerable<RoleDTO>> GetUserDiscordRolesAsync(ulong guildId, ulong userId);
 

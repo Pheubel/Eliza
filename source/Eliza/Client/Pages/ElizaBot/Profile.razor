@@ -19,6 +19,7 @@
             }
         </div>
     </div>
+    <!--Tags-->
     <div class="row mt-3">
         <div class="col">
             <div class="rounded border border-success">
@@ -108,6 +109,19 @@
             </div>
         </div>
     </div>
+    @if (_guilds != null && _guilds.Count != 0)
+    {
+        <h1 class="text-center m-2">Guilds</h1>
+        @foreach (var guild in _guilds)
+        {
+            <div class="row mt-3">
+                @foreach (var role in guild.Roles)
+                {
+                    <div> @role.RoleName </div>
+                }
+            </div>
+        }
+    }
     <div class="row mt-3" />
 </div>
 
@@ -124,11 +138,14 @@
     List<Eliza.Shared.RoleDTO> _recievedRequestableRoles;
     List<Eliza.Shared.RoleDTO> _requestableRoles;
 
+    List<Eliza.Shared.GuildWithRolesDTO> _guilds;
+
     protected override async Task OnInitializedAsync()
     {
         await AuthState.GetAuthenticationStateAsync();
 
         var tagFetchTask = TagApi.GetUserTaglistAsync();
+        var guildFetchTask = RoleApi.GetUserGuildsWithRequestableRoles(AuthState.UserId);
 
         var RolesFethTask = RoleApi.GetDiscordRolesAsync(Eliza.Shared.Constants.RozServerId);
         var RequestableRoleFetchTask = RoleApi.GetRequestableRoleIdsAsync(Eliza.Shared.Constants.RozServerId);
@@ -141,6 +158,10 @@
 
         _subscribedTags = new List<string>(userTagList.SubscribedTags);
         _blacklistedTags = new List<string>(userTagList.BlacklistedTags);
+
+        var guilds = await guildFetchTask;
+
+        _guilds = new List<Eliza.Shared.GuildWithRolesDTO>(guilds);
     }
 
     protected async Task SubmitBlacklistedTagsAsync()
@@ -193,6 +214,7 @@
 
         _subscribedTags.Remove(tag);
     }
+
     protected async Task UnblacklistTagAsync(string tag)
     {
         await TagApi.UnblacklistAsync(new[] { tag });

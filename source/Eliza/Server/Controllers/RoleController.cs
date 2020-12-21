@@ -1,9 +1,11 @@
-﻿using Eliza.Bot.Services;
+﻿using Discord.WebSocket;
+using Eliza.Bot.Services;
 using Eliza.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -15,6 +17,7 @@ namespace Eliza.Server.Controllers
     public class RoleController : ControllerBase
     {
         private readonly IRoleService _roleService;
+        private readonly DiscordSocketClient _client;
 
         public RoleController(IRoleService roleService)
         {
@@ -24,6 +27,30 @@ namespace Eliza.Server.Controllers
         [HttpGet("guild")]
         public Task<IEnumerable<RoleDTO>> GetDiscordRolesAsync(ulong guildId) =>
             _roleService.GetDiscordRolesAsync(guildId);
+
+        [HttpGet("userGuilds")]
+        public async Task<IEnumerable<GuildWithRolesDTO>> GetDiscordGuildsWithRequestableRoles(ulong userId)
+        {
+            var userGuilds = _client.Guilds.Where(g => g.GetUser(userId) != null);
+
+            var guildsWithRoles = new GuildWithRolesDTO[userGuilds.Count()];
+
+            int itterator = 0;
+            foreach (var guild in userGuilds)
+            {
+                var guildWithRoles = new GuildWithRolesDTO
+                {
+                    GuildId = guild.Id,
+                    GuildName = guild.Name,
+                    Roles = await _roleService.GetRequestableRolesAsync(guild.Id)
+                };
+
+                guildsWithRoles[itterator] = guildWithRoles;
+                itterator++;
+            }
+
+            return guildsWithRoles;
+        }
 
         [HttpGet("user")]
         public Task<IEnumerable<RoleDTO>> GetUserDiscordRolesAsync(ulong guildId, ulong userId) =>
