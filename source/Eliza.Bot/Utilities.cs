@@ -16,6 +16,7 @@ namespace Eliza.Bot
                 MessageCacheSize = botSettings.MessageCacheSize >= 0 ?
                     botSettings.MessageCacheSize :
                     throw new Exception($"{nameof(botSettings.MessageCacheSize)} must be set to a non negative integer."),
+                GatewayIntents = GatewayIntents.Guilds | GatewayIntents.GuildMessageReactions | GatewayIntents.GuildMembers | GatewayIntents.GuildMessages,
 #if DEBUG
                 LogLevel = LogSeverity.Debug
 #else
